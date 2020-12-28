@@ -227,6 +227,7 @@ button:disabled {
     display: flex;
     padding: 8px 16px;
     transition: all .2s;
+    cursor: pointer;
 }
 
 .sidenav-item:hover, .sidenav-item-active {
@@ -256,7 +257,6 @@ button:disabled {
     padding: 24px 32px;
     text-align: center;
 }
-
 
 .grey-card {
     background: var(--medium-light-grey);
@@ -291,8 +291,21 @@ button:disabled {
     color: white;
 }
 
+.form-input-light {
+    background-color: var(--medium-light-grey);
+    color: black;
+}
+
 .form-input::placeholder {
     color: #A8A8A8
+}
+
+.orange-select-input {
+    background: transparent;
+    border: 2px solid #EC6524;
+    border-radius: 20px;
+    padding: 5px 16px;
+    color: var(--medium-orange);
 }
 
 .error {
@@ -367,7 +380,6 @@ button:disabled {
     display: block;
     object-fit: contain;
 }
-
 
 /* Spending.html, analytics.html, profile.html - categories */
 
