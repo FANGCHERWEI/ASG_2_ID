@@ -1,0 +1,45 @@
+:root {
+    --dark-grey: #1a1a1a;
+    --light-grey: #f9f9f9;
+    --medium-orange: #EC6524;
+    --medium-green: #1CB83E;
+    --medium-red: #E34949;
+    --medium-light-grey: #EEEEEE;
+    --medium-grey: #A8A8A8;
+    --small-font: 1.3rem;
+    --medium-font: 1.7rem;
+    --large-font: 2rem;
+}
+  
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: inherit;
+}
+
+body {
+    color: #000;
+    line-height: 1.6;
+    font-size: 1.5rem;
+    font-family: 'Roboto', Helvetica, Arial, sans-serif;
+    box-sizing: border-box;
+}
+
+p {
+    font-size: 1.6rem;
+}
+
+html {
+    font-size: 68%;
+}
+@media only screen and (max-width: 800px) {
+    html {
+        font-size: 62%;
+    }
+}
+@media only screen and (max-width: 600px) {
+    html {
+        font-size: 56%;
+    }
+}
