@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spending</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="./css/styles.css">
+    <link rel="shortcut icon" type="image/png" href="./assets/img/logo.png" />
+</head>
+
+<body>
+    <div class="container-fluid px-0">
+        <nav class="sidenav-wrapper">
+            <ul class="sidenav">
+                <li class="sidenav-item sidenav-item-active">
+                    <i class="material-icons">attach_money</i>
+                    <a class="sidenav-link" href="spending.html">spending</a>
+                </li>
+                <li class="sidenav-item">
+                    <i class="material-icons">insights</i>
+                    <a class="sidenav-link" href="analytics.html">analytics</a>
+                </li>
+                <li class="sidenav-item">
+                    <i class="material-icons">account_circle</i>
+                    <a class="sidenav-link" href="profile.html">profile</a>
+                </li>
+            </ul>
+            <div class="sidenav-item">
+                <i class="material-icons">login</i>
+                <a class="sidenav-link" href="profile.html">logout</a>
+            </div>
+        </nav>
+
+        <main class="app">
+            <div class="mb-5">
+                <h1 class="app-title-primary">Track your spending</h1>
+            </div>
+
+            <section>
+                <div class="mb-3">
+                    <h2>Categories</h2>
+                </div>
+                <div class="row category-cards">
+                    <div class="grey-card col-lg-3 col-md-5">
+                        <div class="text-center">
+                            <i class="material-icons category-icon">local_dining</i>
+                        </div>
+                        <h3 class="category-content">food</h3>
+                    </div>
+                    <div class="grey-card col-lg-3 col-md-5">
+                        <div class="text-center">
+                            <i class="material-icons category-icon">commute</i>
+                        </div>
+                        <h3 class="category-content">transport</h3>
+                    </div>
+                    <div class="grey-card col-lg-3 col-md-5">
+                        <div class="text-center">
+                            <i class="material-icons category-icon">receipt</i>
+                        </div>
+                        <h3 class="category-content">bills</h3>
+                    </div>
+                    <div class="grey-card col-lg-3 col-md-5">
+                        <div class="text-center">
+                            <i class="material-icons category-icon">home</i>
+                        </div>
+                        <h3 class="category-content">home</h3>
+                    </div>
+                    <div class="grey-card col-lg-3 col-md-5">
+                        <div class="text-center">
+                            <i class="material-icons category-icon">sports_esports</i>
+                        </div>
+                        <h3 class="category-content">entertaiment</h3>
+                    </div>
+                    <div class="grey-card col-lg-3 col-md-5">
+                        <div class="text-center">
+                            <i class="material-icons category-icon">category</i>
+                        </div>
+                        <h3 class="category-content">others</h3>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <button class="btn primary-btn mt-3 floating-btn" id="new-spending-btn">
+            <i class="material-icons">add</i>
+            <span>New spending</span>
+        </button>
+    </div>
+</body>
+
+</html>

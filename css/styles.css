@@ -6,9 +6,6 @@
     --medium-red: #E34949;
     --medium-light-grey: #EEEEEE;
     --medium-grey: #A8A8A8;
-    --small-font: 1.3rem;
-    --medium-font: 1.7rem;
-    --large-font: 2rem;
 }
   
 
@@ -44,15 +41,15 @@ html {
     }
 }
 
-
 /* Typography */
+
 h1 {
     font-weight: bold;
     font-size: 5rem;
 }
 
 h2 {
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: 400;
 }
 
@@ -66,7 +63,7 @@ h3 {
 
 h4 {
     font-weight: bold;
-    font-size: 2rem;
+    font-size: 1.7rem;
 }
 
 .subtitle {
@@ -102,7 +99,7 @@ h4 {
     border: 2px solid #FFFFFF;
     border-radius: 20px;
     width: fit-content;
-    padding: 8px 16px;
+    padding: 4px 16px;
     min-width: 200px;
     transition: all .2s;
     display: flex;
@@ -111,7 +108,7 @@ h4 {
 }
 
 .outline-btn a, .outline-btn span {
-    font-size: 2rem;
+    font-size: 1.7rem;
     text-transform: uppercase;
     color: white;
     text-decoration: none;
@@ -130,7 +127,7 @@ h4 {
 .primary-btn {
     border-radius: 20px;
     width: fit-content;
-    padding: 8px 16px;
+    padding: 4px 16px;
     background-color: var(--medium-orange);
     min-width: 200px;
     transition: all .2s;
@@ -140,7 +137,7 @@ h4 {
 }
 
 .primary-btn i {
-    font-size: 2rem;
+    font-size: 1.7rem;
     color: white;
     margin-right: 1rem;
 }
@@ -211,6 +208,44 @@ button:disabled {
     color: black;
 }
 
+
+.sidenav-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 200px;
+    padding: 32px 0 32px 0;
+    background-color: var(--dark-grey);
+    z-index: 100;
+}
+
+.sidenav-item {
+    display: flex;
+    padding: 8px 16px;
+    transition: all .2s;
+}
+
+.sidenav-item:hover, .sidenav-item-active {
+    background-color: var(--medium-orange);
+}
+
+.sidenav-item i {
+    margin-right: 10px;
+    color: white;
+    font-size: 2.5rem;
+}
+
+.sidenav-item a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+}
+
 /* Card */
 
 .dark-grey-card {
@@ -221,6 +256,22 @@ button:disabled {
     padding: 24px 32px;
     text-align: center;
 }
+
+
+.grey-card {
+    background: var(--medium-light-grey);
+    border-radius: 20px;
+    padding: 8px 16px;
+}
+
+.white-card {
+    background-color: white;
+    border: 2px solid var(--medium-light-grey);
+    border-radius: 20px;
+    padding: 24px 32px;
+}
+
+/* Form */
 
 .form .form-input-wrapper:not(:last-child) {
     margin-bottom: 1.5rem;
@@ -315,4 +366,55 @@ button:disabled {
     width: 100%;
     display: block;
     object-fit: contain;
+}
+
+
+/* Spending.html, analytics.html, profile.html - categories */
+
+.app {
+    margin-left: 200px;
+    padding: 32px 48px;
+    position: relative;
+    min-height: 100vh;
+    background-color: var(--light-grey);
+}
+
+.app section {
+    margin-bottom: 3rem;
+}
+
+.app-title-primary {
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.floating-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    z-index: 150;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+/* Spending.html - categories */
+
+.category-icon {
+    color: var(--medium-orange);
+    font-size: 50px;
+    margin: auto;
+}
+
+.category-content {
+    text-align: center;
+}
+
+.category-cards .grey-card {
+    margin: 1rem;
 }
