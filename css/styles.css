@@ -137,13 +137,13 @@ h4 {
 }
 
 .primary-btn i {
-    font-size: 1.7rem;
+    font-size: 2rem;
     color: white;
     margin-right: 1rem;
 }
 
 .primary-btn a, .primary-btn span {
-    font-size: 2rem;
+    font-size: 1.7rem;
     text-transform: uppercase;
     color: white;
     text-decoration: none;
@@ -240,11 +240,14 @@ button:disabled {
     font-size: 2.5rem;
 }
 
-.sidenav-item a {
+.sidenav-item a, .sidenav-item span {
     color: white;
     text-decoration: none;
     font-size: 1.5rem;
     text-transform: uppercase;
+    width: 100%;
+    display: flex;
+    align-items: center;
 }
 
 /* Card */
@@ -466,4 +469,18 @@ ul.pie-legend li {
 ul.pie-legend li span {
     padding: 5px 10px;
     color: #fff;
+}
+
+/* Profile.html */
+
+.profile-img {
+    height: auto;
+    width: 100%;
+    object-fit: contain;
+}
+
+.profile-img img {
+    height: 100%;
+    width: 100%;
+    display: block;
 }
