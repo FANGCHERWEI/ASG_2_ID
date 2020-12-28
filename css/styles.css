@@ -169,7 +169,6 @@ button:disabled {
     text-decoration: none;
 }
 
-
 /* Nav */
 
 .home-nav {
@@ -205,5 +204,30 @@ button:disabled {
 
 .home-nav-sticky li a {
     color: black;
+}
+
+/* Index.html - header */
+
+.header-container {
+    margin-top: 45px;
+    min-height: calc(100vh - 52.88px);
+    padding: 32px;
+    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.3)), url('../assets/img/index-background.jpg');
+    background-size: cover;
+    color: white;
+}
+
+.header-content {
+    display: flex;
+    flex-direction: column;
+    min-height: 90vh;
+    justify-content: center;
+}
+
+.header-subtitle {
+    font-weight: lighter;
+    font-size: 2rem;
+    max-width: 500px;
+    margin: auto;
 }
 
