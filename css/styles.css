@@ -450,3 +450,20 @@ button:disabled {
 .transaction-icon:hover {
     color: var(--medium-red);
 }
+
+/* Analytics.html - chart */
+
+ul.pie-legend {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+ul.pie-legend li {
+   display:inline-block;
+   margin-right: 10px; 
+}
+
+ul.pie-legend li span {
+    padding: 5px 10px;
+    color: #fff;
+}
