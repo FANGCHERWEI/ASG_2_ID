@@ -43,3 +43,167 @@ html {
         font-size: 56%;
     }
 }
+
+
+/* Typography */
+h1 {
+    font-weight: bold;
+    font-size: 5rem;
+}
+
+h2 {
+    font-size: 2.5rem;
+    font-weight: 400;
+}
+
+h3 {
+    font-weight: 500;
+    font-size: 1.7rem;
+    line-height: 29px;
+    letter-spacing: 0.205em;
+    text-transform: uppercase;
+}
+
+h4 {
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+.subtitle {
+    font-weight: lighter;
+    font-size: 2rem;
+}
+
+.date-text {
+    color: #A8A8A8;
+    font-size: 1.4rem;
+}
+
+.price-text {
+    font-weight: lighter;
+    font-size: 3rem;
+}
+
+.green-text {
+    color: var(--medium-green);
+}
+
+.orange-text {
+    color: var(--medium-orange);
+}
+
+.red-text {
+    color: var(--medium-red);
+}
+
+/* Button */
+
+.outline-btn {
+    border: 2px solid #FFFFFF;
+    border-radius: 20px;
+    width: fit-content;
+    padding: 8px 16px;
+    min-width: 200px;
+    transition: all .2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.outline-btn a, .outline-btn span {
+    font-size: 2rem;
+    text-transform: uppercase;
+    color: white;
+    text-decoration: none;
+}
+
+.outline-btn i {
+    font-size: 2rem;
+    color: white;
+    margin-right: 1rem;
+}
+
+.outline-btn:hover {
+    background-color: var(--medium-orange);
+}
+
+.primary-btn {
+    border-radius: 20px;
+    width: fit-content;
+    padding: 8px 16px;
+    background-color: var(--medium-orange);
+    min-width: 200px;
+    transition: all .2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.primary-btn i {
+    font-size: 2rem;
+    color: white;
+    margin-right: 1rem;
+}
+
+.primary-btn a, .primary-btn span {
+    font-size: 2rem;
+    text-transform: uppercase;
+    color: white;
+    text-decoration: none;
+}
+
+.primary-btn:hover {
+    background-color: #E34949;
+}
+
+button {
+    cursor: pointer;
+}
+
+button:disabled {
+    cursor: default;
+}
+
+.coloured-link {
+    color: var(--medium-orange);
+    text-decoration: none;
+}
+
+
+/* Nav */
+
+.home-nav {
+    background-color: var(--dark-grey);
+    padding: 10px 16px;
+}
+
+.home-nav li a {
+    color: white;
+    text-transform: uppercase;
+    font-size: var(--small-font);
+    position: relative;
+}
+
+.home-nav li a::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 0;
+    background-color: var(--medium-orange);
+    transition: all .2s;
+}
+
+.home-nav li a:hover::after {
+    width: 100%;
+}
+
+.home-nav-sticky {
+    background-color: var(--light-grey);
+}
+
+.home-nav-sticky li a {
+    color: black;
+}
+
