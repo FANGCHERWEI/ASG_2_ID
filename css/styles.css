@@ -418,3 +418,23 @@ button:disabled {
 .category-cards .grey-card {
     margin: 1rem;
 }
+
+/* Spending.html - transactions */
+
+.transaction-cards {
+    padding: 1rem 0 1rem 0;
+}
+
+.transaction-cards .white-card:not(:last-child) {
+    margin-bottom: 2rem;
+}
+
+.transaction-icon {
+    color: var(--medium-orange);
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.transaction-icon:hover {
+    color: var(--medium-red);
+}
