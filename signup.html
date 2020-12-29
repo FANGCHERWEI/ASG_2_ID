@@ -25,7 +25,8 @@
                 <div class="mb-4">
                     <h1>ITRACK</h1>
                 </div>
-                <form class="form w-100 mb-4 d-flex flex-column justify-content-center align-items-center" id="form">
+                <form class="form w-100 mb-4 d-flex flex-column justify-content-center align-items-center"
+                    id="signup-form">
                     <div class="form-input-wrapper w-100">
                         <input class="form-input form-input-dark" type="text" required name="email"
                             placeholder="email" />
@@ -57,54 +58,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script src="js/auth.js"></script>
     <script src="js/validator.js"></script>
     <script src="js/index.js"></script>
     <script>
         $(document).ready(function () {
             $("#error").hide();
-
-            // Attach a submit handler to the form
-            $("#form").submit(function (event) {
-                $("#error").hide();
-                // Prevent form submission
-                event.preventDefault();
-
-                var $form = $(this);
-                const email = $form.find("input[name='email']").val();
-                const password = $form.find("input[name='password']").val();
-                const confirmPassword = $form.find("input[name='confirm-password']").val();
-
-                // Check if all fields are filled
-                if (email == "" || password == "") {
-                    $("#error").text("Please fill in all fields.")
-                    $("#error").show();
-                    return;
-                }
-
-                // Check if email is valid
-                if (!validateEmail(email)) {
-                    $("#error").text("Please enter a valid email.")
-                    $("#error").show();
-                    return;
-                }
-
-                // Check if both passwords are equal
-                if (password != confirmPassword) {
-                    $("#error").text("Both passwords must match.")
-                    $("#error").show();
-                    return;
-                }
-
-                // Send the data using post
-                // var posting = $.post({
-                //     url: url,
-                //     data: { experience: exp },
-                //     success: function (data) {
-                //         window.location = 'spending.html';
-                //     }
-                // });
-                window.location = 'login.html';
-            });
         });
     </script>
 </body>
