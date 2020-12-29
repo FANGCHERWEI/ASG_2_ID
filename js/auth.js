@@ -23,6 +23,15 @@ $("#login-form").submit(function (event) {
     }
 
     // Log user in
+    firebase.auth().signInWithEmailAndPassword(email, password)
+        .then(function () {
+            window.location = 'spending.html';
+        })
+        .catch(function (error) {
+            const errorMessage = "Email or password is wrong."
+            $("#error").text(errorMessage)
+            $("#error").show();
+        });
 });
 
 // Attach a submit handler to the signup form
@@ -67,11 +76,34 @@ $("#signup-form").submit(function (event) {
     }
 
     // Sign up user
-
+    firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then(function () {
+            const errorMessage = "User is created."
+            $("#success").text(errorMessage)
+            $("#success").show();
+        })
+        .catch(function (error) {
+            const errorMessage = "An error occurred."
+            $("#error").text(errorMessage)
+            $("#error").show();
+        });
 });
 
 $("#logout-btn").click(function (e) {
     e.preventDefault();
 
     // Log user out
-})
+    firebase.auth().signOut();
+});
+
+firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+        localStorage.setItem('uid', user.uid);
+        localStorage.setItem('email', user.email);
+    } else {
+        if ((window.location.pathname !== "/itrack/index.html" && window.location.pathname !== "/index.html")
+            && (window.location.pathname !== "/itrack/login.html" && window.location.pathname !== "/login.html")) {
+            window.location = './login.html';
+        }
+    }
+});
