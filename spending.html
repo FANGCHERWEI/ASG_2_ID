@@ -94,9 +94,9 @@
             <section>
                 <div class="mb-3 d-flex justify-content-between align-items-center">
                     <div>
-                        <h2>Transactions</h2>
+                        <h2>Spendings</h2>
                     </div>
-                    <select name="transactions-filter" id="transactions-filter" class="orange-select-input">
+                    <select name="spendings-filter" id="spendings-filter" class="orange-select-input">
                         <option value="none">None</option>
                         <option value="recent">Most recent</option>
                         <option value="past">Least recent</option>
@@ -104,7 +104,7 @@
                         <option value="smallest">Smallest</option>
                     </select>
                 </div>
-                <div class="transaction-cards">
+                <ul class="spendings-cards" id="spendings">
                     <div class="white-card w-100">
                         <div class="d-flex justify-content-between">
                             <div>
@@ -112,8 +112,8 @@
                                 <p class="date-text">12 Sep 2020</p>
                             </div>
                             <div>
-                                <i class="material-icons transaction-icon">create</i>
-                                <i class="material-icons transaction-icon">delete</i>
+                                <i class="material-icons spendings-icon">create</i>
+                                <i class="material-icons spendings-icon">delete</i>
                             </div>
                         </div>
                         <div class="d-flex justify-content-between">
@@ -126,28 +126,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="white-card w-100">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <h4>Sales</h4>
-                                <p class="date-text">12 Sep 2020</p>
-                            </div>
-                            <div>
-                                <i class="material-icons transaction-icon">create</i>
-                                <i class="material-icons transaction-icon">delete</i>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <p class="my-0">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Suscipit
-                                repudiandae dolore,
-                                nostrum dignissimos beatae amet?</p>
-                            <div class="d-flex align-items-center">
-                                <i class="material-icons green-text">arrow_drop_up</i>
-                                <p class="price-text green-text my-0">$10.04</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                </ul>
             </section>
         </main>
 
@@ -155,6 +134,58 @@
             <i class="material-icons">add</i>
             <span>New spending</span>
         </button>
+
+        <div class="popup-wrapper" id="popup">
+            <div class="overlay" id="popup-overlay">
+                <div class="popup">
+                    <div class="mb-3">
+                        <span class="popup-title">Create new spending</span>
+                    </div>
+                    <div class="close-btn" id="close-btn">
+                        <i class="material-icons">close</i>
+                    </div>
+                    <form class="form d-flex flex-column justify-content-center align-items-center"
+                        id="create-spending-form">
+                        <div class="form-input-wrapper w-100">
+                            <label for="date">
+                                <h4>Date</h4>
+                            </label>
+                            <input class="form-input form-input-light" required type="text" name="date"
+                                placeholder="DD-MM-YYYY" />
+                        </div>
+                        <div class="form-input-wrapper w-100">
+                            <label for="amount">
+                                <h4>Amount</h4>
+                            </label>
+                            <input class="form-input form-input-light" required type="number" name="amount"
+                                placeholder="amount" />
+                        </div>
+                        <div class="form-input-wrapper w-100">
+                            <label for="category">
+                                <h4>Category</h4>
+                            </label>
+                            <select name="category" id="categories" class="form-input form-input-light">
+                                <option value="none">None</option>
+                                <option value="recent">Most recent</option>
+                                <option value="past">Least recent</option>
+                                <option value="largest">Largest</option>
+                                <option value="smallest">Smallest</option>
+                            </select>
+                        </div>
+                        <div class="form-input-wrapper w-100">
+                            <label for="note">
+                                <h4>Note</h4>
+                            </label>
+                            <textarea class="form-input form-input-light" id="note" name="note" rows="10"></textarea>
+                        </div>
+                        <div id="error" class="error mb-3"></div>
+                        <button class="btn primary-btn mt-3" id="create-spending-btn">
+                            <span>Create</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- jQuery library -->
@@ -163,8 +194,25 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script src="js/auth.js"></script>
     <script src="js/validator.js"></script>
     <script src="js/index.js"></script>
+    <script>
+        // Handle popup
+        $("#popup").hide();
+        $("#new-spending-btn").click(function () {
+            $("#popup").show();
+        });
+        $("#close-btn").click(function () {
+            $("#popup").hide();
+        });
+        $("#popup-overlay").click(function (e) {
+            if (!$(e.target).closest('.popup').length) {
+                $("#popup").hide();
+            }
+        });
+    </script>
 </body>
 
 </html>

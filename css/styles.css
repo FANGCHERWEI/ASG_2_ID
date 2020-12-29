@@ -321,6 +321,42 @@ button:disabled {
     font-size: 1.5rem;
 }
 
+/* Popup */
+
+.popup-wrapper {
+    width: 100w;
+    height: 100vh;
+    z-index: 200;
+    position: fixed;
+}
+
+.popup-title {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    padding: 24px 32px;
+    background-color:#FFFFFF;
+    border-radius: 20px;
+    border: 1px solid #999999;
+    text-align: center;
+}
+
+.overlay {
+    background-color: rgba(0,0,0,0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+}
+
 /* Index.html - header */
 
 .header-container {
@@ -439,23 +475,23 @@ button:disabled {
     margin: 1rem;
 }
 
-/* Spending.html - transactions */
+/* Spending.html - spendings */
 
-.transaction-cards {
+.spendings-cards {
     padding: 1rem 0 1rem 0;
 }
 
-.transaction-cards .white-card:not(:last-child) {
+.spendings-cards .white-card:not(:last-child) {
     margin-bottom: 2rem;
 }
 
-.transaction-icon {
+.spendings-icon {
     color: var(--medium-orange);
     font-size: 2rem;
     cursor: pointer;
 }
 
-.transaction-icon:hover {
+.spendings-icon:hover {
     color: var(--medium-red);
 }
 
