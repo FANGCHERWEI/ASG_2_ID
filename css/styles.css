@@ -479,6 +479,7 @@ button:disabled {
 
 .spendings-cards {
     padding: 1rem 0 1rem 0;
+    list-style: none;
 }
 
 .spendings-cards .white-card:not(:last-child) {
