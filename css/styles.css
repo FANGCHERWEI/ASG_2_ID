@@ -208,7 +208,6 @@ button:disabled {
     color: black;
 }
 
-
 .sidenav-wrapper {
     display: flex;
     flex-direction: column;
@@ -216,11 +215,23 @@ button:disabled {
     position: fixed;
     top: 0;
     left: 0;
-    height: 100vh;
     width: 200px;
+    height: 100vh;
     padding: 32px 0 32px 0;
     background-color: var(--dark-grey);
     z-index: 100;
+    transition: all .2s;
+}
+
+.sidenav-toggle-btn {
+    margin-right: 2rem;
+    display: none;
+}
+
+@media screen and (max-width: 800px) {
+    .sidenav-toggle-btn {
+        display: inline-block
+    }
 }
 
 .sidenav-item {
@@ -248,6 +259,32 @@ button:disabled {
     width: 100%;
     display: flex;
     align-items: center;
+}
+
+.sidenav-close {
+    transform: translateX(-250px);
+}
+
+.close-sidenav-btn {
+    display: none;
+    color: white;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+@media screen and (max-width: 800px) {
+    .sidenav-open {
+        transform: translateX(0);
+    }
+    
+    .sidenav-open+.app {
+        transform: translateX(200px);
+    }
+
+    .close-sidenav-btn {
+        display: block;
+    }
 }
 
 /* Card */
@@ -361,11 +398,25 @@ button:disabled {
 
 .header-container {
     margin-top: 45px;
-    min-height: calc(100vh - 52.88px);
+    min-height: calc(100vh - 45px);
     padding: 32px;
     background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.3)), url('../assets/img/index-background.jpg');
     background-size: cover;
     color: white;
+}
+
+@media screen and (max-width: 800px) {
+    .header-container {
+        margin-top: 48px;
+        min-height: calc(100vh - 48px);
+    }
+}
+
+@media screen and (max-width: 600) {
+    .header-container {
+        margin-top: 40px;
+        min-height: calc(100vh - 40px);
+    }
 }
 
 .header-content {
@@ -442,6 +493,12 @@ button:disabled {
 .app-title-primary {
     font-size: 3rem;
     font-weight: bold;
+}
+
+@media screen and (max-width: 800px) {
+    .app {
+        margin-left: 0;
+    }
 }
 
 .floating-btn {

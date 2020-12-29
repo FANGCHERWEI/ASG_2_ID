@@ -101,9 +101,12 @@ firebase.auth().onAuthStateChanged(function (user) {
         localStorage.setItem('uid', user.uid);
         localStorage.setItem('email', user.email);
     } else {
-        if ((window.location.pathname !== "/itrack/index.html" && window.location.pathname !== "/index.html")
-            && (window.location.pathname !== "/itrack/login.html" && window.location.pathname !== "/login.html")) {
+        if (!hasWindowsLocation("/index.html") && !hasWindowsLocation("/login.html") && !hasWindowsLocation("/signup.html")) {
             window.location = './login.html';
         }
     }
 });
+
+const hasWindowsLocation = (pathname) => {
+    return window.location.pathname === ("/itrack" + pathname) || window.location.pathname === pathname
+}
