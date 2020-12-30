@@ -1,6 +1,6 @@
 $(document).ready(function () {
     // If window resizes, hide/show sidenav
-    const resize = function () {
+    const handleSidenavResize = function () {
         if ($(window).width() <= 800) {
             $("#sidenav").addClass("sidenav-close");
             $("#sidenav").removeClass("sidenav-open");
@@ -9,8 +9,17 @@ $(document).ready(function () {
             $("#sidenav").removeClass("sidenav-close");
         }
     }
+    // If window resizes, handle new spending button ui
+    const handleSpendingBtnResize = function () {
+        if ($(window).width() <= 600) {
+            $("#new-spending-btn").addClass("floating-btn-small")
+        } else {
+            $("#new-spending-btn").removeClass("floating-btn-small")
+        }
+    }
     $(window).resize(function () {
-        resize();
+        handleSidenavResize();
+        handleSpendingBtnResize();
     });
 
     // Set up close button

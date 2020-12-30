@@ -66,6 +66,24 @@ h4 {
     font-size: 1.7rem;
 }
 
+@media screen and (max-width: 600px) {
+    h1 {
+        font-size: 4rem;
+    }
+
+    h2 {
+        font-size: 1.7rem;
+    }
+
+    h3 {
+        font-size: 1.5rem;
+    }
+
+    h4 {
+        font-size: 1.3rem;
+    }
+}
+
 .subtitle {
     font-weight: lighter;
     font-size: 2rem;
@@ -361,7 +379,7 @@ button:disabled {
 /* Popup */
 
 .popup-wrapper {
-    width: 100w;
+    width: 100vw;
     height: 100vh;
     z-index: 200;
     position: fixed;
@@ -383,6 +401,20 @@ button:disabled {
     border-radius: 20px;
     border: 1px solid #999999;
     text-align: center;
+}
+
+@media screen and (max-width: 600px) {
+    .popup {
+        width: 400px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .popup {
+        width: 100%;
+        height: 100vh;
+        border-radius: 0;
+    }
 }
 
 .overlay {
@@ -507,6 +539,21 @@ button:disabled {
     right: 30px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     z-index: 150;
+}
+
+.floating-btn-small {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    min-width: 0;
+}
+
+.floating-btn-small span {
+    display: none;
+}
+
+.floating-btn-small i {
+    margin: 0;
 }
 
 .close-btn {
