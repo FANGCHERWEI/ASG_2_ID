@@ -41,4 +41,12 @@ $(document).ready(function () {
             $("#sidenav").removeClass("sidenav-open");
         }
     });
+
+    // Set up logout button
+    $("#logout-btn").click(function (e) {
+        e.preventDefault();
+
+        // Log user out
+        logout();
+    });
 });

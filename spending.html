@@ -177,10 +177,10 @@
     <!-- Firebase Firestore-->
     <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-firestore.js"></script>
 
-    <script src="js/spending.js"></script>
     <script src="js/firebase.js"></script>
     <script src="js/auth.js"></script>
-    <script src="js/firestore.js"></script>
+    <script src="js/spending.js"></script>
+    <script src="js/spendings.js"></script>
     <script src="js/validator.js"></script>
     <script src="js/index.js"></script>
     <script>
@@ -197,6 +197,54 @@
                 $("#popup").hide();
             }
         });
+
+        // Create a spending
+        $("#create-spending-form").submit(function (e) {
+            e.preventDefault();
+            const date = $("#create-spending-form").find("input[name='date']").val();
+            const amount = $("#create-spending-form").find("input[name='amount']").val();
+            const category = $("#create-spending-form").find("select[name='category']").val();
+            const note = $("#create-spending-form").find("input[name='note']").val();
+            const type = $("#create-spending-form").find("option:selected").data("type");
+            const spending = new Spending(amount, category, new Date(date), note, type);
+
+            // Validate date
+            if (!validateDate(date)) {
+                $("#error").text("Date should be in the correct format and in the future.")
+                $("#error").show();
+                return;
+            }
+
+            // Validate amount
+            if (!validateAmount(amount)) {
+                $("#error").text("Amount should be between 0 and 10000000")
+                $("#error").show();
+                return;
+            }
+
+            // Insert spending into transactions
+            createSpending(spending);
+        });
+
+        const setUpCategories = function (data) {
+            let html = '<select name="category" class="form-input form-input-light">';
+            data.forEach(categoryData => {
+                let category = categoryData.data();
+                html += `<option value="${category.value}" data-type="${category.type}">${category.name}</option>`;
+            });
+            html += '</select>';
+            $("#categories").html(html);
+        }
+
+        // Set up categories
+        $("#new-spending-btn").click(function () {
+            firebase.firestore().collection("categories").get().then(snapshot => {
+                setUpCategories(snapshot.docs);
+            });
+        })
+
+        // Set up spendings
+        $("#spendings").html(getSpendings());
     </script>
 </body>
 
