@@ -9,6 +9,8 @@ $(document).ready(function () {
             $("#sidenav").removeClass("sidenav-close");
         }
     }
+    // Set up sidenav
+    handleSidenavResize();
     // If window resizes, handle new spending button ui
     const handleSpendingBtnResize = function () {
         if ($(window).width() <= 600) {
@@ -31,7 +33,6 @@ $(document).ready(function () {
     // Set up toggle button
     $("#sidenav-toggle-btn").click(function () {
         const width = $("#sidenav").css("width");
-        console.log(width);
         if ($("#sidenav").hasClass("sidenav-close")) {
             $("#sidenav").addClass("sidenav-open");
             $("#sidenav").removeClass("sidenav-close");

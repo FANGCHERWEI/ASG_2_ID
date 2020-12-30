@@ -12,3 +12,45 @@ function validatePassword(password) {
 
     return true;
 }
+
+function validateDate(date) {
+    const tokens = date.split('-');
+    if (tokens.length != 3) {
+        return false;
+    }
+    const day = tokens[0];
+    const month = tokens[1];
+    const year = tokens[2];
+
+    // Check if date is valid
+    var date;
+    const timestamp = Date.parse(date);
+    if (isNaN(timestamp) == false) {
+        date = new Date(timestamp);
+    } else {
+        return false;
+    }
+
+    // Check if date is in the past
+    if (date > new Date()) {
+        return false;
+    }
+
+    return true;
+}
+
+function validateAmount(amount) {
+    if (amount <= 0 || amount >= 10000000) {
+        return false;
+    }
+
+    return true;
+}
+
+function validateName(name) {
+    if (name.length > 20 || name == "" || !name.match(/^[0-9a-z]+$/)) {
+        return false;
+    }
+
+    return true;
+}

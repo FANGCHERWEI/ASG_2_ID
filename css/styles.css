@@ -280,7 +280,7 @@ button:disabled {
 }
 
 .sidenav-close {
-    transform: translateX(-250px);
+    left: -250px;
 }
 
 .close-sidenav-btn {
@@ -293,9 +293,9 @@ button:disabled {
 
 @media screen and (max-width: 800px) {
     .sidenav-open {
-        transform: translateX(0);
+        left: 0;
     }
-    
+
     .sidenav-open+.app {
         transform: translateX(200px);
     }

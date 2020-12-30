@@ -145,13 +145,7 @@
                             <label for="category">
                                 <h4>Category</h4>
                             </label>
-                            <select name="category" id="categories" class="form-input form-input-light">
-                                <option value="none">None</option>
-                                <option value="recent">Most recent</option>
-                                <option value="past">Least recent</option>
-                                <option value="largest">Largest</option>
-                                <option value="smallest">Smallest</option>
-                            </select>
+                            <div id="categories"></div>
                         </div>
                         <div class="form-input-wrapper w-100">
                             <label for="note">
@@ -159,7 +153,8 @@
                             </label>
                             <textarea class="form-input form-input-light" id="note" name="note" rows="10"></textarea>
                         </div>
-                        <div id="error" class="error mb-3"></div>
+                        <div id="popup-error" class="error mb-3"></div>
+                        <div id="popup-success" class="success mb-3"></div>
                         <button class="btn primary-btn mt-3" id="create-spending-btn">
                             <span>Create</span>
                         </button>
@@ -182,6 +177,7 @@
     <!-- Firebase Firestore-->
     <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-firestore.js"></script>
 
+    <script src="js/spending.js"></script>
     <script src="js/firebase.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/firestore.js"></script>

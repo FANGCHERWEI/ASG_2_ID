@@ -1,6 +1,6 @@
 firebase.firestore().settings({ timestampInSnapshots: true });
 
-const setUpSpendings = (data) => {
+const setUpSpendings = function (data) {
     let html = "";
     const expenses = ['Food', 'Entertainment', 'Home', 'Transport', 'Others', 'Bills'];
 
@@ -18,6 +18,13 @@ const setUpSpendings = (data) => {
             textColour = 'green-text';
         }
 
+        let note;
+        if (typeof spending.note === 'undefined') {
+            note = "";
+        } else {
+            note = spending.note;
+        }
+
         const li = `
             <li class="white-card w-100">
                 <div class="d-flex justify-content-between">
@@ -31,7 +38,7 @@ const setUpSpendings = (data) => {
                     </div>
                 </div>
                 <div class="d-flex justify-content-between">
-                    <p class="my-0">${spending.note}</p>
+                    <p class="my-0">${note}</p>
                     <div class="d-flex align-items-center">
                         ${icon}
                         <p class="price-text ${textColour} my-0">${spending.amount}</p>
@@ -77,18 +84,29 @@ $("#create-spending-form").submit(function (e) {
 
     // Insert spending into transactions
     console.log(spendingConverter.toFirestore(spending, localStorage.getItem('uid')))
-    firebase.firestore().collection("spendings").add(spendingConverter.toFirestore(spending, localStorage.getItem('uid')));
+    firebase.firestore().collection("spendings")
+        .add(spendingConverter.toFirestore(spending, localStorage.getItem('uid'))).then(function () {
+            $("#popup-success").text("New spending created. Refresh to view changes.")
+        }).catch(function () {
+            $("#popup-error").text("An error occurred.")
+        });
 });
 
-// Set up categories
-firebase.firestore().collection("categories").get().then(snapshot => {
-    let html = '';
-    snapshot.docs.forEach(data => {
-        let category = data.data();
+const setUpCategories = function (data) {
+    let html = '<select name="category" class="form-input form-input-light">';
+    data.forEach(categoryData => {
+        let category = categoryData.data();
         html += `<option value="${category.value}">${category.name}</option>`;
     });
-    console.log(html)
-    // $("#categories").html(categories);
-});
+    html += '</select>';
+    $("#categories").html(html);
+}
+
+// Set up categories
+$("#new-spending-btn").click(function () {
+    firebase.firestore().collection("categories").get().then(snapshot => {
+        setUpCategories(snapshot.docs);
+    });
+})
 
 
