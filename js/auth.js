@@ -34,7 +34,11 @@ const signup = function (email, password) {
 }
 
 const logout = function () {
-    firebase.auth().signOut();
+    firebase.auth().signOut().then(function () {
+        localStorage.removeItem("email");
+        localStorage.removeItem("uid");
+        localStorage.removeItem("name");
+    });
 }
 
 const hasWindowsLocation = (pathname) => {
@@ -45,6 +49,11 @@ firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
         localStorage.setItem('uid', user.uid);
         localStorage.setItem('email', user.email);
+        firebase.firestore().collection("users").doc(user.uid).get().then(function (doc) {
+            if (doc.exists) {
+                localStorage.setItem('name', doc.data().name);
+            }
+        });
     } else {
         if (!hasWindowsLocation("/index.html") && !hasWindowsLocation("/login.html") && !hasWindowsLocation("/signup.html")) {
             window.location = './login.html';

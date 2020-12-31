@@ -55,15 +55,14 @@
                         <label for="name">
                             <h4>Name</h4>
                         </label>
-                        <input class="form-input form-input-light" required type="text" name="name"
+                        <input class="form-input form-input-light" required type="text" name="name" id="name-input"
                             placeholder="E.g. John" />
                     </div>
                     <div class="form-input-wrapper w-100">
                         <label for="name">
                             <h4>Email</h4>
                         </label>
-                        <input class="form-input form-input-light" required type="text" name="email" disabled
-                            placeholder="E.g. john@gmail.com" />
+                        <input class="form-input form-input-light" id="email-input" type="text" name="email" disabled />
                     </div>
                 </form>
                 <div id="error" class="error mb-3"></div>
@@ -93,6 +92,7 @@
     <script src="js/firebase.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/validator.js"></script>
+    <script src="js/user.js"></script>
     <script src="js/index.js"></script>
     <script>
         $(document).ready(function () {
@@ -103,8 +103,12 @@
             $("#save-profile-btn").click(function (e) {
                 e.preventDefault();
                 const name = $("#profile-form").find("input[name='name']").val();
-                updateName(name, localStorage.getItem("uid"));
+                updateName(localStorage.getItem("uid"), name);
             });
+
+            // Display email and name
+            $("#email-input").val(localStorage.getItem("email"));
+            $("#name-input").val(localStorage.getItem("name"));
         });
     </script>
 </body>

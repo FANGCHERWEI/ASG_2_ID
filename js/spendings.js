@@ -19,7 +19,7 @@ const removeSpending = function (id) {
         .then(function (doc) {
             // Remove spending from spendings
             if (doc.exists) {
-                let spendingData = data.data();
+                let spendingData = doc.data();
                 spendings.filter((currentSpending) => currentSpending.equals(spendingData));
                 localStorage.setItem("spendings", spendings);
             }
@@ -40,9 +40,8 @@ const setSpendingsHtml = function () {
                 html += li;
             });
 
-            localStorage.setItem("spendings", spendings);
-
             // Set up spendings
+            localStorage.setItem("spendings", spendings);
             $("#spendings").html(html);
         });
 }

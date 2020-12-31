@@ -30,11 +30,12 @@ var userConverter = {
 };
 
 const updateName = function (uid, name) {
-    firebase.firestore().collections("users").doc(uid).update({
+    firebase.firestore().collection("users").doc(uid).update({
         "name": name
     }).then(function () {
         $("#success").text("Update is successful");
         $("#success").show();
+        localStorage.setItem("name", name);
     }).catch(function () {
         $("#error").text("An error occurred");
         $("#error").show();
