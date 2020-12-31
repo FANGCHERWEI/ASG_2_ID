@@ -1,18 +1,18 @@
-const addSpending = function (spending) {
-    var spendings = getSpendings();
+const addSpending = async function (spending) {
+    var spendings = await getSpendings();
     firebase.firestore().collection("spendings")
         .add(spendingConverter.toFirestore(spending, localStorage.getItem('uid'))).then(function () {
             // Add spending to spendings
             spendings.push(spending);
-            localStorage.setItem("spendings", spendings)
+            localStorage.setItem("spendings", JSON.stringify(spendings));
             $("#popup-success").text("New spending created. Refresh to view changes.")
         }).catch(function () {
             $("#popup-error").text("An error occurred.")
         });
 }
 
-const removeSpending = function (id) {
-    var spendings = getSpendings();
+const removeSpending = async function (id) {
+    var spendings = await getSpendings();
     firebase.firestore().collection("spendings")
         .doc(id)
         .get()
@@ -21,7 +21,7 @@ const removeSpending = function (id) {
             if (doc.exists) {
                 let spendingData = doc.data();
                 spendings = spendings.filter((currentSpending) => !currentSpending.equals(spendingData));
-                localStorage.setItem("spendings", spendings);
+                localStorage.setItem("spendings", JSON.stringify(spendings));
             }
         }).catch(function () {
         });
@@ -32,7 +32,8 @@ const getSpendings = async function () {
     // If spendings data is available, return it else get spendings from firebase
     if (spendingsData != null && spendingsData != "") {
         const spendings = JSON.parse(spendingsData).map(function (spending) {
-            return new Spending(spending.amount, spending.category, new Date(spending.date), spending.note, spending.type);
+            const newDate = new Date(spending.date.seconds * 1000 + spending.date.nanoseconds / 1000000);
+            return new Spending(spending.amount, spending.category, newDate, spending.note, spending.type);
         });
         return spendings;
     } else {
@@ -69,4 +70,21 @@ const setSpendingsHtml = async function () {
 
     // Set up spendings
     $("#spendings").html(html);
+}
+
+const getOverallStats = async function () {
+    var spendings = await getSpendings();
+    var income = 0;
+    var expense = 0;
+    spendings.forEach(function (spending) {
+        if (spending.type === "expense") {
+            expense += spending.amount;
+        } else {
+            income += spending.amount;
+        }
+    });
+    return {
+        income,
+        expense
+    }
 }

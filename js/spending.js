@@ -14,9 +14,9 @@ class Spending {
             && other.type == this.type;
     }
 
-    // toString() {
-    //     return '(' + "amount:" + this.amount + ', ' + this.category + ', ' + this.date + ', ' + this.note + ', ' + this.type + ')';
-    // }
+    toString() {
+        return '(' + "amount:" + this.amount + ', ' + this.category + ', ' + this.date + ', ' + this.note + ', ' + this.type + ')';
+    }
 
     getHtml() {
         // Get icon and text colour for expense or income

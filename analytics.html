@@ -56,19 +56,19 @@
                 <div class="row category-cards">
                     <div class="grey-card col-lg-3 col-md-5">
                         <div class="text-center">
-                            <p class="price-text orange-text my-0">$10.05</p>
+                            <p class="price-text orange-text my-0">$<span id="income"></span></p>
                         </div>
                         <h3 class="category-content">income</h3>
                     </div>
                     <div class="grey-card col-lg-3 col-md-5">
                         <div class="text-center">
-                            <p class="price-text orange-text my-0">$10.05</p>
+                            <p class="price-text orange-text my-0">$<span id="expense"></span></p>
                         </div>
                         <h3 class="category-content">expenses</h3>
                     </div>
                     <div class="grey-card col-lg-3 col-md-5">
                         <div class="text-center">
-                            <p class="price-text orange-text my-0">$10.05</p>
+                            <p class="price-text orange-text my-0">$<span id="balance"></span></p>
                         </div>
                         <h3 class="category-content">balance</h3>
                     </div>
@@ -120,35 +120,45 @@
 
     <script src="js/firebase.js"></script>
     <script src="js/auth.js"></script>
+    <script src="js/spending.js"></script>
+    <script src="js/spendings.js"></script>
     <script src="js/validator.js"></script>
     <script src="js/index.js"></script>
     <script>
-        // Get the context of the canvas element
-        var ctx = document.getElementById("myChart").getContext('2d');
+        $(document).ready(async function () {
+            // Set up overall stats
+            const overallStats = await getOverallStats();
+            $("#income").text(overallStats.income);
+            $("#expense").text(overallStats.expense);
+            $("#balance").text(overallStats.income - overallStats.expense);
 
-        data = {
-            datasets: [{
-                data: [10, 20, 30],
-                backgroundColor: ["#a3c7c9", "#889d9e", "#647678"],
-                borderWidth: 0,
-                hoverBackgroundColor: ["#96b7b9", "#718283", "#5c6b6d"]
-            }],
+            // Get the context of the canvas element
+            var ctx = document.getElementById("myChart").getContext('2d');
 
-            // These labels appear in the legend and in the tooltips when hovering different arcs
-            labels: [
-                'Red',
-                'Yellow',
-                'Blue'
-            ]
-        };
-        var myDoughnutChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: data,
-            options: {
-                responsive: false
-            }
+            data = {
+                datasets: [{
+                    data: [10, 20, 30],
+                    backgroundColor: ["#a3c7c9", "#889d9e", "#647678"],
+                    borderWidth: 0,
+                    hoverBackgroundColor: ["#96b7b9", "#718283", "#5c6b6d"]
+                }],
+
+                // These labels appear in the legend and in the tooltips when hovering different arcs
+                labels: [
+                    'Red',
+                    'Yellow',
+                    'Blue'
+                ]
+            };
+            var myDoughnutChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: data,
+                options: {
+                    responsive: false
+                }
+            });
+            document.getElementById("legendDiv").innerHTML = myDoughnutChart.generateLegend();
         });
-        document.getElementById("legendDiv").innerHTML = myDoughnutChart.generateLegend();
     </script>
 </body>
 
