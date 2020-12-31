@@ -1,5 +1,3 @@
-firebase.firestore().settings({ timestampInSnapshots: true });
-
 var spendings = [];
 
 const addSpending = function (spending) {
@@ -29,23 +27,22 @@ const removeSpending = function (id) {
         });
 }
 
-const getSpendings = function () {
+const setSpendingsHtml = function () {
+    let html = "";
     firebase.firestore().collection("spendings")
         .where("userid", "==", localStorage.getItem('uid'))
         .get().then(snapshot => {
             // Create spendings list html
-            let html = "";
-
             snapshot.docs.forEach(doc => {
                 const spendingData = doc.data();
                 const spending = new Spending(spendingData.amount, spendingData.category, spendingData.date, spendingData.note, spendingData.type);
-                addSpending(spending);
                 const li = spending.getHtml();
                 html += li;
             });
 
-            localStorage.setItem("spendings", spendings)
+            localStorage.setItem("spendings", spendings);
+
+            // Set up spendings
+            $("#spendings").html(html);
         });
 }
-
-

@@ -1,3 +1,5 @@
+firebase.firestore().settings({ timestampInSnapshots: true });
+
 $(document).ready(function () {
     // If window resizes, hide/show sidenav
     const handleSidenavResize = function () {

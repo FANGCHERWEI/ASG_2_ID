@@ -566,7 +566,6 @@ button:disabled {
 /* Spending.html - categories */
 
 .category-icon {
-    color: var(--medium-orange);
     font-size: 50px;
     margin: auto;
 }
@@ -598,6 +597,10 @@ button:disabled {
 
 .spendings-icon:hover {
     color: var(--medium-red);
+}
+
+.spendings-title {
+    text-transform: capitalize;
 }
 
 /* Analytics.html - chart */

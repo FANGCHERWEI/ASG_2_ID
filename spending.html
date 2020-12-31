@@ -56,39 +56,51 @@
                 <div class="row category-cards">
                     <div class="grey-card col-lg-3 col-md-5 col-sm-5">
                         <div class="text-center">
-                            <i class="material-icons category-icon">local_dining</i>
+                            <i class="material-icons category-icon red-text">local_dining</i>
                         </div>
                         <h3 class="category-content">food</h3>
                     </div>
                     <div class="grey-card col-lg-3 col-md-5 col-sm-5">
                         <div class="text-center">
-                            <i class="material-icons category-icon">commute</i>
+                            <i class="material-icons category-icon red-text">commute</i>
                         </div>
                         <h3 class="category-content">transport</h3>
                     </div>
                     <div class="grey-card col-lg-3 col-md-5 col-sm-5">
                         <div class="text-center">
-                            <i class="material-icons category-icon">receipt</i>
+                            <i class="material-icons category-icon red-text">receipt</i>
                         </div>
                         <h3 class="category-content">bills</h3>
                     </div>
                     <div class="grey-card col-lg-3 col-md-5 col-sm-5">
                         <div class="text-center">
-                            <i class="material-icons category-icon">home</i>
+                            <i class="material-icons category-icon red-text">home</i>
                         </div>
                         <h3 class="category-content">home</h3>
                     </div>
                     <div class="grey-card col-lg-3 col-md-5 col-sm-5">
                         <div class="text-center">
-                            <i class="material-icons category-icon">sports_esports</i>
+                            <i class="material-icons category-icon red-text">sports_esports</i>
                         </div>
-                        <h3 class="category-content">entertaiment</h3>
+                        <h3 class="category-content">entertainment</h3>
                     </div>
                     <div class="grey-card col-lg-3 col-md-5 col-sm-5">
                         <div class="text-center">
-                            <i class="material-icons category-icon">category</i>
+                            <i class="material-icons category-icon green-text">account_balance_wallet</i>
                         </div>
-                        <h3 class="category-content">others</h3>
+                        <h3 class="category-content">income</h3>
+                    </div>
+                    <div class="grey-card col-lg-3 col-md-5 col-sm-5">
+                        <div class="text-center">
+                            <i class="material-icons category-icon green-text">local_mall</i>
+                        </div>
+                        <h3 class="category-content">sales</h3>
+                    </div>
+                    <div class="grey-card col-lg-3 col-md-5 col-sm-5">
+                        <div class="text-center">
+                            <i class="material-icons category-icon green-text">redeem</i>
+                        </div>
+                        <h3 class="category-content">gift</h3>
                     </div>
                 </div>
             </section>
@@ -98,13 +110,10 @@
                     <div>
                         <h2>Spendings</h2>
                     </div>
-                    <select name="spendings-filter" id="spendings-filter" class="orange-select-input">
-                        <option value="none">None</option>
-                        <option value="recent">Most recent</option>
-                        <option value="past">Least recent</option>
-                        <option value="largest">Largest</option>
-                        <option value="smallest">Smallest</option>
-                    </select>
+                    <div class="form-input-wrapper">
+                        <input class="form-input form-input-light" type="text" placeholder="Search..."
+                            id="search-spendings-input">
+                    </div>
                 </div>
                 <ul class="spendings-cards" id="spendings">
                 </ul>
@@ -204,7 +213,7 @@
             const date = $("#create-spending-form").find("input[name='date']").val();
             const amount = $("#create-spending-form").find("input[name='amount']").val();
             const category = $("#create-spending-form").find("select[name='category']").val();
-            const note = $("#create-spending-form").find("input[name='note']").val();
+            const note = $("#create-spending-form").find("textarea[name='note']").val();
             const type = $("#create-spending-form").find("option:selected").data("type");
             const spending = new Spending(amount, category, new Date(date), note, type);
 
@@ -223,9 +232,10 @@
             }
 
             // Insert spending into transactions
-            createSpending(spending);
+            addSpending(spending);
         });
 
+        // Set up categories
         const setUpCategories = function (data) {
             let html = '<select name="category" class="form-input form-input-light">';
             data.forEach(categoryData => {
@@ -236,15 +246,23 @@
             $("#categories").html(html);
         }
 
-        // Set up categories
         $("#new-spending-btn").click(function () {
             firebase.firestore().collection("categories").get().then(snapshot => {
                 setUpCategories(snapshot.docs);
             });
-        })
+        });
 
         // Set up spendings
-        $("#spendings").html(getSpendings());
+        setSpendingsHtml();
+
+        // Set up spendings search filter
+        $("#search-spendings-input").on("keyup", function () {
+            var value = this.value.toLowerCase().trim();
+            $("#spendings li").show().filter(function () {
+                // Search spendings title
+                return $(this).find(".spendings-title").text().toLowerCase().trim().indexOf(value) == -1
+            }).hide();
+        });
     </script>
 </body>
 

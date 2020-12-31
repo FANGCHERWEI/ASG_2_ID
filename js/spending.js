@@ -41,7 +41,7 @@ class Spending {
             <li class="white-card w-100">
                 <div class="d-flex justify-content-between">
                     <div>
-                        <h4>${this.category}</h4>
+                        <h4 class="spendings-title">${this.category}</h4>
                         <p class="date-text">${this.date.toDate().toDateString()}</p>
                     </div>
                     <div>
@@ -50,7 +50,7 @@ class Spending {
                     </div>
                 </div>
                 <div class="d-flex justify-content-between">
-                    <p class="my-0">${note}</p>
+                    <p class="my-0 spendings-note">${note}</p>
                     <div class="d-flex align-items-center">
                         ${icon}
                         <p class="price-text ${textColour} my-0">${this.amount}</p>
@@ -67,12 +67,10 @@ var spendingConverter = {
         let spendingObject = {
             amount: spending.amount,
             category: spending.category,
-            date: firebase.firestore.Timestamp.fromDate(new Date(spending.date)),
+            date: firebase.firestore.Timestamp.fromDate(spending.date),
             userid: uid,
-            type: spending.type
-        }
-        if (typeof spending.note !== "undefined" && spending.note != null) {
-            spendingObject.note = spending.note;
+            type: spending.type,
+            note: spending.note
         }
         return spendingObject;
     },

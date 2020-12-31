@@ -15,10 +15,11 @@ class User {
 }
 
 var userConverter = {
-    toFirestore: function (user) {
+    toFirestore: function (user, uid) {
         let userObject = {
             name: user.name,
             email: user.email,
+            uid
         }
         return userObject;
     },
@@ -27,3 +28,15 @@ var userConverter = {
         return new User(data.name, data.email);
     }
 };
+
+const updateName = function (uid, name) {
+    firebase.firestore().collections("users").doc(uid).update({
+        "name": name
+    }).then(function () {
+        $("#success").text("Update is successful");
+        $("#success").show();
+    }).catch(function () {
+        $("#error").text("An error occurred");
+        $("#error").show();
+    });
+}

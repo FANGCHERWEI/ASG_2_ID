@@ -12,9 +12,14 @@ const login = function (email, password) {
 
 const signup = function (email, password) {
     firebase.auth().createUserWithEmailAndPassword(email, password)
-        .then(function () {
+        .then(function (data) {
+            const userObject = {
+                name: "",
+                email: data.user.email
+            }
             return firebase.firestore().collection("users")
-                .add(userConverter.toFirestore(user));
+                .doc(data.user.uid)
+                .set(userConverter.toFirestore(userObject, data.user.uid));
         })
         .then(function () {
             const errorMessage = "User is created."

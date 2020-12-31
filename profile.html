@@ -56,21 +56,22 @@
                             <h4>Name</h4>
                         </label>
                         <input class="form-input form-input-light" required type="text" name="name"
-                            placeholder="name" />
+                            placeholder="E.g. John" />
                     </div>
                     <div class="form-input-wrapper w-100">
                         <label for="name">
                             <h4>Email</h4>
                         </label>
                         <input class="form-input form-input-light" required type="text" name="email" disabled
-                            placeholder="email" />
+                            placeholder="E.g. john@gmail.com" />
                     </div>
                 </form>
                 <div id="error" class="error mb-3"></div>
+                <div id="success" class="success mb-3"></div>
                 <div class="profile-img col-lg-6 mt-5">
                     <img src="assets/img/profile.png" />
                 </div>
-                <button class="btn primary-btn mt-5 save-btn" id="save-btn">
+                <button class="btn primary-btn mt-5 save-btn" id="save-profile-btn">
                     <span>Save</span>
                 </button>
             </section>
@@ -93,6 +94,19 @@
     <script src="js/auth.js"></script>
     <script src="js/validator.js"></script>
     <script src="js/index.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#error").hide();
+            $("#success").hide();
+
+            // Set up save profile button
+            $("#save-profile-btn").click(function (e) {
+                e.preventDefault();
+                const name = $("#profile-form").find("input[name='name']").val();
+                updateName(name, localStorage.getItem("uid"));
+            });
+        });
+    </script>
 </body>
 
 </html>
