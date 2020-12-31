@@ -14,9 +14,9 @@ class Spending {
             && other.type == this.type;
     }
 
-    toString() {
-        return this.amount + ', ' + this.category + ', ' + this.date + ', ' + this.note + ', ' + this.type;
-    }
+    // toString() {
+    //     return '(' + "amount:" + this.amount + ', ' + this.category + ', ' + this.date + ', ' + this.note + ', ' + this.type + ')';
+    // }
 
     getHtml() {
         // Get icon and text colour for expense or income
@@ -42,7 +42,7 @@ class Spending {
                 <div class="d-flex justify-content-between">
                     <div>
                         <h4 class="spendings-title">${this.category}</h4>
-                        <p class="date-text">${this.date.toDate().toDateString()}</p>
+                        <p class="date-text">${this.date.toDateString()}</p>
                     </div>
                     <div>
                         <i class="material-icons spendings-icon">create</i>
