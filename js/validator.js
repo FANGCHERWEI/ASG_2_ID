@@ -18,21 +18,18 @@ function validateDate(date) {
     if (tokens.length != 3) {
         return false;
     }
-    const day = tokens[0];
-    const month = tokens[1];
-    const year = tokens[2];
 
     // Check if date is valid
-    var date;
+    let newDate;
     const timestamp = Date.parse(date);
     if (isNaN(timestamp) == false) {
-        date = new Date(timestamp);
+        newDate = new Date(timestamp);
     } else {
         return false;
     }
 
     // Check if date is in the past
-    if (date > new Date()) {
+    if (newDate > new Date()) {
         return false;
     }
 

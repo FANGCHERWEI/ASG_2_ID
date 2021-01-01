@@ -1,21 +1,19 @@
 class Spending {
-    constructor(amount, category, date, note, type) {
+    constructor(amount, category, date, note, type, id) {
         this.amount = parseInt(amount);
         this.category = category;
         this.date = date;
         this.note = note;
         this.type = type;
+        this.id = id;
     }
 
     equals(other) {
-        return other.amount == this.amount
-            && other.category == this.category
-            && other.date == this.date
-            && other.type == this.type;
+        return other.id == this.id;
     }
 
     toString() {
-        return '(' + "amount:" + this.amount + ', ' + this.category + ', ' + this.date + ', ' + this.note + ', ' + this.type + ')';
+        return '(' + this.id + ', ' + this.amount + ', ' + this.category + ', ' + this.date + ', ' + this.note + ', ' + this.type + ')';
     }
 
     getHtml() {
@@ -38,7 +36,7 @@ class Spending {
         }
 
         const li = `
-            <li class="white-card w-100">
+            <li class="white-card w-100" id=${this.id}>
                 <div class="d-flex justify-content-between">
                     <div>
                         <h4 class="spendings-title">${this.category}</h4>
@@ -46,7 +44,7 @@ class Spending {
                     </div>
                     <div>
                         <i class="material-icons spendings-icon">create</i>
-                        <i class="material-icons spendings-icon">delete</i>
+                        <i class="material-icons spendings-icon" id="delete-spending-btn">delete</i>
                     </div>
                 </div>
                 <div class="d-flex justify-content-between">
@@ -62,7 +60,7 @@ class Spending {
     }
 }
 
-var spendingConverter = {
+let spendingConverter = {
     toFirestore: function (spending, uid) {
         let spendingObject = {
             amount: spending.amount,
@@ -76,6 +74,7 @@ var spendingConverter = {
     },
     fromFirestore: function (snapshot, options) {
         const data = snapshot.data(options);
-        return new Spending(data.amount, data.category, data.date, data.note, data.type);
+        console.log('data' + data);
+        return new Spending(data.amount, data.category, data.date, data.note, data.type, data.id);
     }
 };

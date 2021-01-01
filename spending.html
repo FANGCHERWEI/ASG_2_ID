@@ -116,6 +116,7 @@
                     </div>
                 </div>
                 <ul class="spendings-cards" id="spendings">
+                    <li class="error" id="spendings-error"></li>
                 </ul>
             </section>
         </main>
@@ -193,76 +194,108 @@
     <script src="js/validator.js"></script>
     <script src="js/index.js"></script>
     <script>
-        // Handle popup
-        $("#popup").hide();
-        $("#new-spending-btn").click(function () {
-            $("#popup").show();
-        });
-        $("#close-btn").click(function () {
+        $(document).ready(async function () {
+            // Set up popup
             $("#popup").hide();
-        });
-        $("#popup-overlay").click(function (e) {
-            if (!$(e.target).closest('.popup').length) {
+            $("#popup-error").hide();
+            $("#popup-success").hide();
+            $("#new-spending-btn").click(function () {
+                $("#popup").show();
+            });
+            $("#close-btn").click(function () {
                 $("#popup").hide();
-            }
-        });
-
-        // Create a spending
-        $("#create-spending-form").submit(function (e) {
-            e.preventDefault();
-            const date = $("#create-spending-form").find("input[name='date']").val();
-            const amount = $("#create-spending-form").find("input[name='amount']").val();
-            const category = $("#create-spending-form").find("select[name='category']").val();
-            const note = $("#create-spending-form").find("textarea[name='note']").val();
-            const type = $("#create-spending-form").find("option:selected").data("type");
-            const spending = new Spending(amount, category, new Date(date), note, type);
-
-            // Validate date
-            if (!validateDate(date)) {
-                $("#error").text("Date should be in the correct format and in the future.")
-                $("#error").show();
-                return;
-            }
-
-            // Validate amount
-            if (!validateAmount(amount)) {
-                $("#error").text("Amount should be between 0 and 10000000")
-                $("#error").show();
-                return;
-            }
-
-            // Insert spending into transactions
-            addSpending(spending);
-        });
-
-        // Set up categories
-        const setUpCategories = function (data) {
-            let html = '<select name="category" class="form-input form-input-light">';
-            data.forEach(categoryData => {
-                let category = categoryData.data();
-                html += `<option value="${category.value}" data-type="${category.type}">${category.name}</option>`;
             });
-            html += '</select>';
-            $("#categories").html(html);
-        }
-
-        $("#new-spending-btn").click(function () {
-            firebase.firestore().collection("categories").get().then(snapshot => {
-                setUpCategories(snapshot.docs);
+            $("#popup-overlay").click(function (e) {
+                if (!$(e.target).closest('.popup').length) {
+                    $("#popup").hide();
+                }
             });
-        });
 
-        // Set up spendings
-        setSpendingsHtml();
+            // Create a spending
+            $("#create-spending-form").submit(async function (e) {
+                e.preventDefault();
+                const date = $("#create-spending-form").find("input[name='date']").val();
+                const amount = $("#create-spending-form").find("input[name='amount']").val();
+                const category = $("#create-spending-form").find("select[name='category']").val();
+                const note = $("#create-spending-form").find("textarea[name='note']").val();
+                const type = $("#create-spending-form").find("option:selected").data("type");
+                const spending = new Spending(amount, category, new Date(date), note, type);
 
-        // Set up spendings search filter
-        $("#search-spendings-input").on("keyup", function () {
-            var value = this.value.toLowerCase().trim();
-            $("#spendings li").show().filter(function () {
-                // Search spendings title
-                return $(this).find(".spendings-title").text().toLowerCase().trim().indexOf(value) == -1
-            }).hide();
-        });
+                // Validate date
+                if (!validateDate(date)) {
+                    $("#error").text("Date should be in the correct format and in the future.")
+                    $("#error").show();
+                    return;
+                }
+
+                // Validate amount
+                if (!validateAmount(amount)) {
+                    $("#error").text("Amount should be between 0 and 10000000")
+                    $("#error").show();
+                    return;
+                }
+
+                // Insert spending into transactions
+                try {
+                    await addSpending(spending);
+                    $("#popup-success").text("New spending created. Refresh to view changes.");
+                    $("#popup-success").show();
+                } catch (error) {
+                    $("#popup-error").text("An error occurred.");
+                    $("#popup-error").show();
+                }
+            });
+
+            // Set up categories
+            const setUpCategories = function (data) {
+                let html = '<select name="category" class="form-input form-input-light">';
+                data.forEach(categoryData => {
+                    let category = categoryData.data();
+                    html += `<option value="${category.value}" data-type="${category.type}">${category.name}</option>`;
+                });
+                html += '</select>';
+                $("#categories").html(html);
+            }
+
+            $("#new-spending-btn").click(function () {
+                firebase.firestore().collection("categories").get().then(snapshot => {
+                    setUpCategories(snapshot.docs);
+                });
+            });
+
+            // Set up spendings
+            $("#spendings-error").hide();
+            try {
+                let spendingsHtml = await getSpendingsHtml();
+                $("#spendings").html(spendingsHtml);
+            } catch (error) {
+                $("#spendings-error").text("Unable to fetch spendings from database.");
+                $("#spendings-error").show();
+            }
+
+            // Set up spendings search filter
+            $("#search-spendings-input").on("keyup", function () {
+                let value = this.value.toLowerCase().trim();
+                $("#spendings li").show().filter(function () {
+                    // Search spendings title
+                    return $(this).find(".spendings-title").text().toLowerCase().trim().indexOf(value) == -1
+                }).hide();
+            });
+
+            // Remove a spending
+            $("#delete-spending-btn").click(async function (e) {
+                e.preventDefault();
+                const id = $(this).closest('.white-card').attr('id');
+                try {
+                    await removeSpending(id);
+                    let spendingsHtml = await getSpendingsHtml();
+                    $("#spendings").html(spendingsHtml);
+                } catch (error) {
+                    $("#spendings-error").text(error);
+                    $("#spendings-error").show();
+                }
+            });
+        })
     </script>
 </body>
 

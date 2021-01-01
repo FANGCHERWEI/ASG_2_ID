@@ -1,5 +1,5 @@
 class User {
-    constructor(name, email, password) {
+    constructor(name, email) {
         this.name = name;
         this.email = email;
     }
@@ -14,7 +14,7 @@ class User {
     }
 }
 
-var userConverter = {
+let userConverter = {
     toFirestore: function (user, uid) {
         let userObject = {
             name: user.name,

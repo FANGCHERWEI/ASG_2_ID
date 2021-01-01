@@ -49,7 +49,7 @@ const hasWindowsLocation = (pathname) => {
 }
 
 firebase.auth().onAuthStateChanged(function (user) {
-    var spendings = [];
+    let spendings = [];
     if (user) {
         // Save details to local storage
         localStorage.setItem('uid', user.uid);
@@ -63,7 +63,7 @@ firebase.auth().onAuthStateChanged(function (user) {
         }).then(function (snapshot) {
             snapshot.docs.forEach(doc => {
                 const spendingData = doc.data();
-                const spending = new Spending(spendingData.amount, spendingData.category, spendingData.date, spendingData.note, spendingData.type);
+                const spending = new Spending(spendingData.amount, spendingData.category, spendingData.date, spendingData.note, spendingData.type, doc.id);
                 spendings.push(spending);
             });
             localStorage.setItem("spendings", JSON.stringify(spendings));

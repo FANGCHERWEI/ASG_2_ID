@@ -1,29 +1,26 @@
 const addSpending = async function (spending) {
-    var spendings = await getSpendings();
-    firebase.firestore().collection("spendings")
+    let spendings = await getSpendings();
+    await firebase.firestore().collection("spendings")
         .add(spendingConverter.toFirestore(spending, localStorage.getItem('uid'))).then(function () {
             // Add spending to spendings
             spendings.push(spending);
             localStorage.setItem("spendings", JSON.stringify(spendings));
-            $("#popup-success").text("New spending created. Refresh to view changes.")
         }).catch(function () {
-            $("#popup-error").text("An error occurred.")
+            throw "Unable to add spending."
         });
 }
 
 const removeSpending = async function (id) {
-    var spendings = await getSpendings();
-    firebase.firestore().collection("spendings")
+    let spendings = await getSpendings();
+    await firebase.firestore().collection("spendings")
         .doc(id)
-        .get()
+        .delete()
         .then(function (doc) {
             // Remove spending from spendings
-            if (doc.exists) {
-                let spendingData = doc.data();
-                spendings = spendings.filter((currentSpending) => !currentSpending.equals(spendingData));
-                localStorage.setItem("spendings", JSON.stringify(spendings));
-            }
-        }).catch(function () {
+            spendings = spendings.filter((currentSpending) => currentSpending.id != id);
+            localStorage.setItem("spendings", JSON.stringify(spendings));
+        }).catch(function (e) {
+            throw "Unable to delete spending."
         });
 }
 
@@ -33,7 +30,7 @@ const getSpendings = async function () {
     if (spendingsData != null && spendingsData != "") {
         const spendings = JSON.parse(spendingsData).map(function (spending) {
             const newDate = new Date(spending.date.seconds * 1000 + spending.date.nanoseconds / 1000000);
-            return new Spending(spending.amount, spending.category, newDate, spending.note, spending.type);
+            return new Spending(spending.amount, spending.category, newDate, spending.note, spending.type, spending.id);
         });
         return spendings;
     } else {
@@ -44,7 +41,7 @@ const getSpendings = async function () {
 }
 
 const getSpendingsFromFirebase = async function (uid) {
-    var spendings = [];
+    let spendings = [];
     // Get spendings from firebase
     await firebase.firestore().collection("spendings")
         .where("userid", "==", uid)
@@ -52,7 +49,7 @@ const getSpendingsFromFirebase = async function (uid) {
             // Create spendings list
             snapshot.docs.forEach(doc => {
                 const spendingData = doc.data();
-                const spending = new Spending(spendingData.amount, spendingData.category, spendingData.date.toDate(), spendingData.note, spendingData.type);
+                const spending = new Spending(spendingData.amount, spendingData.category, spendingData.date.toDate(), spendingData.note, spendingData.type, doc.id);
                 spendings.push(spending);
             });
         });
@@ -60,22 +57,20 @@ const getSpendingsFromFirebase = async function (uid) {
 
 }
 
-const setSpendingsHtml = async function () {
+const getSpendingsHtml = async function () {
     let html = "";
-    var spendings = await getSpendings();
+    let spendings = await getSpendings();
     spendings.forEach(spending => {
         const li = spending.getHtml();
         html += li;
     });
-
-    // Set up spendings
-    $("#spendings").html(html);
+    return html;
 }
 
 const getOverallStats = async function () {
-    var spendings = await getSpendings();
-    var income = 0;
-    var expense = 0;
+    let spendings = await getSpendings();
+    let income = 0;
+    let expense = 0;
     spendings.forEach(function (spending) {
         if (spending.type === "expense") {
             expense += spending.amount;
