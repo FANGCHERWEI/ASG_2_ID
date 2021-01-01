@@ -43,7 +43,7 @@ class Spending {
                         <p class="date-text">${new Date(this.date).toDateString()}</p>
                     </div>
                     <div>
-                        <i class="material-icons spendings-icon">create</i>
+                        <i class="material-icons spendings-icon edit-spending-btn">create</i>
                         <i class="material-icons spendings-icon delete-spending-btn">delete</i>
                     </div>
                 </div>

@@ -194,6 +194,42 @@
     <script src="js/validator.js"></script>
     <script src="js/index.js"></script>
     <script>
+        var editId = null;
+
+        const hidePopup = function () {
+            editId = null;
+            $("#popup").hide();
+            $("#popup-error").hide();
+            $("#popup-success").hide();
+        }
+
+        const showPopup = async function () {
+            await firebase.firestore().collection("categories").get().then(snapshot => {
+                let html = '<select name="category" class="form-input form-input-light">';
+                snapshot.docs.forEach(categoryData => {
+                    let category = categoryData.data();
+                    html += `<option value="${category.value}" data-type="${category.type}">${category.name}</option>`;
+                });
+                html += '</select>';
+                $("#categories").html(html);
+            });
+            $("#popup").show();
+        }
+
+        const getFormattedDate = function (date) {
+            var date = new Date(date),
+                month = '' + (date.getMonth() + 1),
+                day = '' + date.getDate(),
+                year = date.getFullYear();
+
+            if (month.length < 2)
+                month = '0' + month;
+            if (day.length < 2)
+                day = '0' + day;
+
+            return [month, day, year].join('-');
+        }
+
         const setUpSpendings = async function () {
             // Set up spendings
             $("#spendings-error").hide();
@@ -208,7 +244,7 @@
             // Set up delete spending button for each spending
             $(".delete-spending-btn").click(async function (e) {
                 e.preventDefault();
-                id = $(this).parent().parent().parent().attr("id");
+                const id = $(this).parent().parent().parent().attr("id");
                 try {
                     await removeSpending(id);
                     await setUpSpendings();
@@ -217,12 +253,22 @@
                     $("#spendings-error").show();
                 }
             });
-        }
 
-        const hidePopup = function () {
-            $("#popup").hide();
-            $("#popup-error").hide();
-            $("#popup-success").hide();
+            // Set up edit spending button for each spending
+            $(".edit-spending-btn").click(async function (e) {
+                e.preventDefault();
+                const id = $(this).parent().parent().parent().attr("id");
+                let spendings = await getSpendings();
+                const spending = spendings.filter(function (currentSpending) {
+                    return currentSpending.id == id;
+                })[0];
+                await showPopup();
+                editId = id;
+                const date = $("#create-spending-form").find("input[name='date']").val(getFormattedDate(spending.date));
+                const amount = $("#create-spending-form").find("input[name='amount']").val(spending.amount);
+                const note = $("#create-spending-form").find("textarea[name='note']").val(spending.note ? spending.note : "");
+                const type = $("#categories select").val(spending.category);
+            });
         }
 
         $(document).ready(async function () {
@@ -240,7 +286,7 @@
                 }
             });
 
-            // Create a spending
+            // Create or edit a spending
             $("#create-spending-form").submit(async function (e) {
                 e.preventDefault();
                 const date = $("#create-spending-form").find("input[name='date']").val();
@@ -248,13 +294,23 @@
                 const category = $("#create-spending-form").find("select[name='category']").val();
                 const note = $("#create-spending-form").find("textarea[name='note']").val();
                 const type = $("#create-spending-form").find("option:selected").data("type");
-                const spending = {
-                    amount,
-                    category,
-                    date: new Date(date),
-                    note,
-                    type
-                };
+                const spending = new Spending(amount, category, new Date(date), note, type, editId);
+
+                // Edit spending
+                if (editId != null) {
+                    try {
+                        await editSpending(spending);
+                        await setUpSpendings();
+                        hidePopup();
+                        return;
+                    } catch (error) {
+                        $("#spendings-error").text(error);
+                        $("#spendings-error").show();
+                        return;
+                    }
+                }
+
+                // Create new spending
 
                 // Validate date
                 if (!validateDate(date)) {
@@ -285,22 +341,13 @@
                     $("#popup-error").text("An error occurred.");
                     $("#popup-error").show();
                     $("#popup-success").hide();
-
                 }
             });
 
             // Set up new spending button
             $("#new-spending-btn").click(async function () {
-                await firebase.firestore().collection("categories").get().then(snapshot => {
-                    let html = '<select name="category" class="form-input form-input-light">';
-                    snapshot.docs.forEach(categoryData => {
-                        let category = categoryData.data();
-                        html += `<option value="${category.value}" data-type="${category.type}">${category.name}</option>`;
-                    });
-                    html += '</select>';
-                    $("#categories").html(html);
-                });
-                $("#popup").show();
+                editId = null;
+                await showPopup();
             });
 
             // Set up spendings search filter

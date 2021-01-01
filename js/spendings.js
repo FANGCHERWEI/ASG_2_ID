@@ -1,13 +1,37 @@
 const addSpending = async function (spending) {
     let spendings = await getSpendings();
     await firebase.firestore().collection("spendings")
-        .add(spendingConverter.toFirestore(spending, localStorage.getItem('uid'))).then(function (doc) {
+        .add(spendingConverter.toFirestore(spending, localStorage.getItem('uid')))
+        .then(function (doc) {
             // Add spending to spendings
             spending.id = doc.id;
             spendings.push(spending);
             localStorage.setItem("spendings", JSON.stringify(spendings));
         }).catch(function (error) {
             throw "Unable to add spending."
+        });
+}
+
+const editSpending = async function (spending) {
+    let spendings = await getSpendings();
+    await firebase.firestore().collection("spendings")
+        .doc(spending.id)
+        .update({
+            amount: spending.amount,
+            category: spending.category,
+            date: firebase.firestore.Timestamp.fromDate(spending.date),
+            type: spending.type,
+            note: spending.note,
+        })
+        .then(function () {
+            let newSpendings = spendings.filter(function (currentSpending) {
+                return currentSpending.id != spending.id;
+            });
+            newSpendings.push(spending);
+            localStorage.setItem("spendings", JSON.stringify(newSpendings));
+        })
+        .catch(function (error) {
+            throw "Unable to edit spending."
         });
 }
 
