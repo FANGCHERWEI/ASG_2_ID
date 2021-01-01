@@ -60,12 +60,8 @@ firebase.auth().onAuthStateChanged(function (user) {
             }
         }).then(function () {
             return firebase.firestore().collection("spendings").where("userid", "==", user.uid).get();
-        }).then(function (snapshot) {
-            snapshot.docs.forEach(doc => {
-                const spendingData = doc.data();
-                const spending = new Spending(spendingData.amount, spendingData.category, spendingData.date, spendingData.note, spendingData.type, doc.id);
-                spendings.push(spending);
-            });
+        }).then(async function (snapshot) {
+            const spendings = await getSpendingsFromFirebase(user.uid);
             localStorage.setItem("spendings", JSON.stringify(spendings));
         });
     } else {

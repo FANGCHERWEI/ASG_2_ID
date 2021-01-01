@@ -1,11 +1,12 @@
 const addSpending = async function (spending) {
     let spendings = await getSpendings();
     await firebase.firestore().collection("spendings")
-        .add(spendingConverter.toFirestore(spending, localStorage.getItem('uid'))).then(function () {
+        .add(spendingConverter.toFirestore(spending, localStorage.getItem('uid'))).then(function (doc) {
             // Add spending to spendings
+            spending.id = doc.id;
             spendings.push(spending);
             localStorage.setItem("spendings", JSON.stringify(spendings));
-        }).catch(function () {
+        }).catch(function (error) {
             throw "Unable to add spending."
         });
 }
@@ -19,7 +20,7 @@ const removeSpending = async function (id) {
             // Remove spending from spendings
             spendings = spendings.filter((currentSpending) => currentSpending.id != id);
             localStorage.setItem("spendings", JSON.stringify(spendings));
-        }).catch(function (e) {
+        }).catch(function (error) {
             throw "Unable to delete spending."
         });
 }
@@ -29,7 +30,7 @@ const getSpendings = async function () {
     // If spendings data is available, return it else get spendings from firebase
     if (spendingsData != null && spendingsData != "") {
         const spendings = JSON.parse(spendingsData).map(function (spending) {
-            const newDate = new Date(spending.date.seconds * 1000 + spending.date.nanoseconds / 1000000);
+            let newDate = new Date(spending.date);
             return new Spending(spending.amount, spending.category, newDate, spending.note, spending.type, spending.id);
         });
         return spendings;

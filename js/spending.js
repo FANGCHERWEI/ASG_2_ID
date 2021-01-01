@@ -40,11 +40,11 @@ class Spending {
                 <div class="d-flex justify-content-between">
                     <div>
                         <h4 class="spendings-title">${this.category}</h4>
-                        <p class="date-text">${this.date.toDateString()}</p>
+                        <p class="date-text">${new Date(this.date).toDateString()}</p>
                     </div>
                     <div>
                         <i class="material-icons spendings-icon">create</i>
-                        <i class="material-icons spendings-icon" id="delete-spending-btn">delete</i>
+                        <i class="material-icons spendings-icon delete-spending-btn">delete</i>
                     </div>
                 </div>
                 <div class="d-flex justify-content-between">
@@ -62,19 +62,20 @@ class Spending {
 
 let spendingConverter = {
     toFirestore: function (spending, uid) {
+        // Extra field userid to tag spending to a particular user
         let spendingObject = {
             amount: spending.amount,
             category: spending.category,
             date: firebase.firestore.Timestamp.fromDate(spending.date),
-            userid: uid,
             type: spending.type,
-            note: spending.note
+            note: spending.note,
+            userid: uid
         }
+
         return spendingObject;
     },
     fromFirestore: function (snapshot, options) {
         const data = snapshot.data(options);
-        console.log('data' + data);
         return new Spending(data.amount, data.category, data.date, data.note, data.type, data.id);
     }
 };
