@@ -108,3 +108,20 @@ const getOverallStats = async function () {
         expense
     }
 }
+
+const getMonthlySpending = async function (month) {
+    let spendings = await getSpendings();
+    let monthlySpending = {};
+    spendings.forEach(function (spending) {
+        const date = spending.date;
+        if (new Date(spending.date).getMonth() == month) {
+            let amount = monthlySpending[spending.category];
+            if (typeof amount == "undefined") {
+                amount = 0;
+            }
+            amount += spending.amount;
+            monthlySpending[spending.category] = amount;
+        }
+    });
+    return monthlySpending;
+}

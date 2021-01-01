@@ -81,22 +81,23 @@
                         <h2>Monthly Spending</h2>
                     </div>
                     <select name="analytics-filter" id="analytics-filter" class="orange-select-input">
-                        <option value="january">January</option>
-                        <option value="february">February</option>
-                        <option value="march">March</option>
-                        <option value="april">April</option>
-                        <option value="june">June</option>
-                        <option value="july">July</option>
-                        <option value="august">August</option>
-                        <option value="september">September</option>
-                        <option value="october">October</option>
-                        <option value="november">November</option>
-                        <option value="december">December</option>
+                        <option value="0">January</option>
+                        <option value="1">February</option>
+                        <option value="2">March</option>
+                        <option value="3">April</option>
+                        <option value="4">May</option>
+                        <option value="5">June</option>
+                        <option value="6">July</option>
+                        <option value="7">August</option>
+                        <option value="8">September</option>
+                        <option value="9">October</option>
+                        <option value="10">November</option>
+                        <option value="11">December</option>
                     </select>
                 </div>
                 <div class="analytics-chart">
+                    <div class="error" id="chart-error"></div>
                     <canvas id="myChart" width="400" height="400"></canvas>
-                    <div id="legendDiv"></div>
                 </div>
             </section>
         </main>
@@ -125,30 +126,58 @@
     <script src="js/validator.js"></script>
     <script src="js/index.js"></script>
     <script>
-        $(document).ready(async function () {
-            // Set up overall stats
+        const setUpOverallStats = async function () {
             const overallStats = await getOverallStats();
-            $("#income").text(overallStats.income);
-            $("#expense").text(overallStats.expense);
-            $("#balance").text(overallStats.income - overallStats.expense);
+            const balance = overallStats.income - overallStats.expense;
+            $("#income").text(overallStats.income.toFixed(2));
+            $("#expense").text(overallStats.expense.toFixed(2));
+            $("#balance").text(balance.toFixed(2));
+        }
+
+        const getIncomeSpendingData = async function (month) {
+            const monthlySpending = await getMonthlySpending(month);
+
+            const monthlySpendingData = [];
+            const keyData = [];
+            Object.keys(monthlySpending).forEach(function (key) {
+                monthlySpendingData.push(monthlySpending[key]);
+                keyData.push(key.charAt(0).toUpperCase() + key.slice(1));
+            });
+            return {
+                monthlySpendingData,
+                keyData
+            };
+        }
+
+        const showNoChartData = function () {
+            $("#myChart").hide();
+            $("#chart-error").text("No data to display.");
+            $("#chart-error").show();
+        }
+
+        const setUpChart = async function (month) {
+            $("#chart-error").hide();
 
             // Get the context of the canvas element
             let ctx = document.getElementById("myChart").getContext('2d');
 
+            const monthlySpending = await getIncomeSpendingData(month);
+            const monthlySpendingData = monthlySpending.monthlySpendingData;
+            const keyData = monthlySpending.keyData;
+            if (monthlySpendingData.length == 0) {
+                showNoChartData();
+                return;
+            }
+
             data = {
                 datasets: [{
-                    data: [10, 20, 30],
-                    backgroundColor: ["#a3c7c9", "#889d9e", "#647678"],
+                    data: monthlySpendingData,
+                    backgroundColor: ["#EC6524", "#1CB83E", "#00c4a7", "#fcba03", "#fc0303", "#03adfc", "#034efc", "#6f03fc"],
                     borderWidth: 0,
-                    hoverBackgroundColor: ["#96b7b9", "#718283", "#5c6b6d"]
                 }],
 
                 // These labels appear in the legend and in the tooltips when hovering different arcs
-                labels: [
-                    'Red',
-                    'Yellow',
-                    'Blue'
-                ]
+                labels: keyData
             };
             let myDoughnutChart = new Chart(ctx, {
                 type: 'doughnut',
@@ -157,7 +186,30 @@
                     responsive: false
                 }
             });
-            document.getElementById("legendDiv").innerHTML = myDoughnutChart.generateLegend();
+            return myDoughnutChart;
+        }
+
+        $(document).ready(async function () {
+            // Set up overall stats
+            await setUpOverallStats();
+
+            // Set up chart
+            const chart = await setUpChart(0);
+
+            // Set up analytics filter
+            $("#analytics-filter").change(async function () {
+                const month = $(this).val();
+                const monthlySpending = await getIncomeSpendingData(month);
+                if (monthlySpending.monthlySpendingData.length == 0) {
+                    showNoChartData();
+                } else {
+                    chart.data.datasets[0].data = monthlySpending.monthlySpendingData;
+                    chart.data.labels = monthlySpending.keyData;
+                    chart.update();
+                    $("#chart-error").hide();
+                    $("#myChart").show();
+                }
+            });
         });
     </script>
 </body>
