@@ -1,4 +1,4 @@
-# Your Project's Name
+# iTrack
 
 iTrack is a money tracker and helps users manage their spending. Users can track and categorise their expenses and income, and view an analysis of their spending through intuitive charts.
 
@@ -73,6 +73,7 @@ If this section grows too long, you may want to split it off into a separate fil
 ### Media
 - The photos used in this site were obtained from 
     - unsplash.com
+    - vectorstock.com
 
 ### Acknowledgements
 
