@@ -97,7 +97,13 @@
                 </div>
                 <div class="analytics-chart">
                     <div class="error" id="chart-error"></div>
-                    <canvas id="myChart" width="400" height="400"></canvas>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <canvas id="myChart" width="400" height="400"></canvas>
+                        </div>
+                        <div class="col-lg-3" id="chart-legend">
+                        </div>
+                    </div>
                 </div>
             </section>
         </main>
@@ -155,8 +161,30 @@
             $("#chart-error").show();
         }
 
+        const setUpChartLegend = function (monthlySpendingData, keyData) {
+            let total = 0;
+            let html = "";
+            monthlySpendingData.forEach(function (monthData) {
+                total += monthData;
+            });
+            monthlySpendingData.forEach(function (monthData, index) {
+                html += `<div class="d-flex justify-content-between w-100 mb-3">
+                                <h4>${keyData[index]}</h4>
+                                <span>$${monthData.toFixed(2)}</span>
+                            </div>`;
+            });
+            html += `<div class="d-flex justify-content-between w-100 mb-3">
+                        <h4>Total</h4>
+                        <span>$${total.toFixed(2)}</span>
+                    </div>`;
+
+            $("#chart-legend").html(html)
+            $("#chart-legend").show();
+        }
+
         const setUpChart = async function (month) {
             $("#chart-error").hide();
+            $("#chart-legend").hide();
 
             // Get the context of the canvas element
             let ctx = document.getElementById("myChart").getContext('2d');
@@ -186,6 +214,10 @@
                     responsive: false
                 }
             });
+
+            // Set up chart legend
+            setUpChartLegend(monthlySpendingData, keyData);
+
             return myDoughnutChart;
         }
 
@@ -199,13 +231,16 @@
             // Set up analytics filter
             $("#analytics-filter").change(async function () {
                 const month = $(this).val();
+                $("#chart-legend").hide();
                 const monthlySpending = await getIncomeSpendingData(month);
                 if (monthlySpending.monthlySpendingData.length == 0) {
                     showNoChartData();
                 } else {
+                    // Show chart data if available
                     chart.data.datasets[0].data = monthlySpending.monthlySpendingData;
                     chart.data.labels = monthlySpending.keyData;
                     chart.update();
+                    setUpChartLegend(monthlySpending.monthlySpendingData, monthlySpending.keyData);
                     $("#chart-error").hide();
                     $("#myChart").show();
                 }

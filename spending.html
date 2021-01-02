@@ -271,6 +271,18 @@
             });
         }
 
+        const showErrorText = function (text) {
+            $("#popup-error").text(text)
+            $("#popup-error").show();
+            $("#popup-success").hide();
+        }
+
+        const showSuccessText = function (text) {
+            $("#popup-success").text(text);
+            $("#popup-success").show();
+            $("#popup-error").hide();
+        }
+
         $(document).ready(async function () {
             // Set up spendings
             await setUpSpendings();
@@ -314,33 +326,25 @@
 
                 // Validate date
                 if (!validateDate(date)) {
-                    $("#popup-error").text("Date should be in the MM-DD-YYYY format and in the past.")
-                    $("#popup-error").show();
-                    $("#popup-success").hide();
+                    showErrorText("Date should be in the MM-DD-YYYY format and in the past.");
                     return;
                 }
 
                 // Validate amount
                 if (!validateAmount(amount)) {
-                    $("#popup-error").text("Amount should be between 0 and 10000000")
-                    $("#popup-error").show();
-                    $("#popup-success").hide();
+                    showErrorText("Amount should be between 0 and 10000000");
                     return;
                 }
 
                 // Insert spending into transactions
                 try {
                     await addSpending(spending);
-                    $("#popup-success").text("New spending created.");
-                    $("#popup-success").show();
-                    $("#popup-error").hide();
+                    showSuccessText("New spending created.");
                     // Clear form values
                     $("#create-spending-form")[0].reset();
                     await setUpSpendings();
                 } catch (error) {
-                    $("#popup-error").text("An error occurred.");
-                    $("#popup-error").show();
-                    $("#popup-success").hide();
+                    showErrorText("An error occurred.");
                 }
             });
 
