@@ -5,8 +5,7 @@ class User {
     }
 
     equals(other) {
-        return other.name == this.name
-            && other.email == this.email;
+        return (other.name == this.name) && (other.email == this.email);
     }
 
     toString() {
@@ -19,8 +18,8 @@ let userConverter = {
         let userObject = {
             name: user.name,
             email: user.email,
-            uid
-        }
+            uid: uid
+        };
         return userObject;
     },
     fromFirestore: function (snapshot, options) {
@@ -40,4 +39,4 @@ const updateName = function (uid, name) {
         $("#error").text("An error occurred");
         $("#error").show();
     });
-}
+};

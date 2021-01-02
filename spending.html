@@ -139,29 +139,27 @@
                         id="create-spending-form">
                         <div class="form-input-wrapper w-100">
                             <label for="date">
-                                <h4>Date</h4>
+                                <span><b>Date</b></span>
                             </label>
-                            <input class="form-input form-input-light" required type="text" name="date"
+                            <input class="form-input form-input-light" required type="text" name="date" id="date"
                                 placeholder="MM-DD-YYYY" />
                         </div>
                         <div class="form-input-wrapper w-100">
                             <label for="amount">
-                                <h4>Amount</h4>
+                                <span><b>Amount</b></span>
                             </label>
-                            <input class="form-input form-input-light" required type="number" name="amount"
+                            <input class="form-input form-input-light" required type="number" name="amount" id="amount"
                                 placeholder="amount" />
                         </div>
                         <div class="form-input-wrapper w-100">
-                            <label for="category">
-                                <h4>Category</h4>
-                            </label>
+                            <span><b>Category</b></span>
                             <div id="categories"></div>
                         </div>
                         <div class="form-input-wrapper w-100">
                             <label for="note">
-                                <h4>Note</h4>
+                                <span><b>Note</b></span>
                             </label>
-                            <textarea class="form-input form-input-light" id="note" name="note" rows="10"></textarea>
+                            <textarea class="form-input form-input-light" name="note" rows="10" id="note"></textarea>
                         </div>
                         <div id="popup-error" class="error mb-3"></div>
                         <div id="popup-success" class="success mb-3"></div>

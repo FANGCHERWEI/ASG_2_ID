@@ -10,17 +10,17 @@ $(document).ready(function () {
             $("#sidenav").addClass("sidenav-open");
             $("#sidenav").removeClass("sidenav-close");
         }
-    }
+    };
     // Set up sidenav
     handleSidenavResize();
     // If window resizes, handle new spending button ui
     const handleSpendingBtnResize = function () {
         if ($(window).width() <= 600) {
-            $("#new-spending-btn").addClass("floating-btn-small")
+            $("#new-spending-btn").addClass("floating-btn-small");
         } else {
-            $("#new-spending-btn").removeClass("floating-btn-small")
+            $("#new-spending-btn").removeClass("floating-btn-small");
         }
-    }
+    };
     $(window).resize(function () {
         handleSidenavResize();
         handleSpendingBtnResize();

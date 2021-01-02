@@ -1,4 +1,4 @@
-const addSpending = async function (spending) {
+async function addSpending(spending) {
     let spendings = await getSpendings();
     await firebase.firestore().collection("spendings")
         .add(spendingConverter.toFirestore(spending, localStorage.getItem('uid')))
@@ -8,11 +8,11 @@ const addSpending = async function (spending) {
             spendings.push(spending);
             localStorage.setItem("spendings", JSON.stringify(spendings));
         }).catch(function (error) {
-            throw "Unable to add spending."
+            throw "Unable to add spending.";
         });
-}
+};
 
-const editSpending = async function (spending) {
+async function editSpending(spending) {
     let spendings = await getSpendings();
     await firebase.firestore().collection("spendings")
         .doc(spending.id)
@@ -31,25 +31,27 @@ const editSpending = async function (spending) {
             localStorage.setItem("spendings", JSON.stringify(newSpendings));
         })
         .catch(function (error) {
-            throw "Unable to edit spending."
+            throw "Unable to edit spending.";
         });
-}
+};
 
-const removeSpending = async function (id) {
+async function removeSpending(id) {
     let spendings = await getSpendings();
     await firebase.firestore().collection("spendings")
         .doc(id)
         .delete()
         .then(function (doc) {
             // Remove spending from spendings
-            spendings = spendings.filter((currentSpending) => currentSpending.id != id);
+            spendings = spendings.filter(function (currentSpending) {
+                return currentSpending.id != id;
+            });
             localStorage.setItem("spendings", JSON.stringify(spendings));
         }).catch(function (error) {
-            throw "Unable to delete spending."
+            throw "Unable to delete spending.";
         });
-}
+};
 
-const getSpendings = async function () {
+async function getSpendings() {
     const spendingsData = localStorage.getItem("spendings");
     // If spendings data is available, return it else get spendings from firebase
     if (spendingsData != null && spendingsData != "") {
@@ -63,16 +65,16 @@ const getSpendings = async function () {
         localStorage.setItem("spendings", JSON.stringify(spendings));
         return spendings;
     }
-}
+};
 
-const getSpendingsFromFirebase = async function (uid) {
+async function getSpendingsFromFirebase(uid) {
     let spendings = [];
     // Get spendings from firebase
     await firebase.firestore().collection("spendings")
         .where("userid", "==", uid)
-        .get().then(snapshot => {
+        .get().then(function (snapshot) {
             // Create spendings list
-            snapshot.docs.forEach(doc => {
+            snapshot.docs.forEach(function (doc) {
                 const spendingData = doc.data();
                 const spending = new Spending(spendingData.amount, spendingData.category, spendingData.date.toDate(), spendingData.note, spendingData.type, doc.id);
                 spendings.push(spending);
@@ -80,19 +82,19 @@ const getSpendingsFromFirebase = async function (uid) {
         });
     return spendings;
 
-}
+};
 
-const getSpendingsHtml = async function () {
+async function getSpendingsHtml() {
     let html = "";
     let spendings = await getSpendings();
-    spendings.forEach(spending => {
+    spendings.forEach(function (spending) {
         const li = spending.getHtml();
         html += li;
     });
     return html;
-}
+};
 
-const getOverallStats = async function () {
+async function getOverallStats() {
     let spendings = await getSpendings();
     let income = 0;
     let expense = 0;
@@ -107,9 +109,9 @@ const getOverallStats = async function () {
         income,
         expense
     }
-}
+};
 
-const getMonthlySpending = async function (month) {
+async function getMonthlySpending(month) {
     let spendings = await getSpendings();
     let monthlySpending = {};
     spendings.forEach(function (spending) {
@@ -124,4 +126,4 @@ const getMonthlySpending = async function (month) {
         }
     });
     return monthlySpending;
-}
+};

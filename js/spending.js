@@ -70,7 +70,7 @@ let spendingConverter = {
             type: spending.type,
             note: spending.note,
             userid: uid
-        }
+        };
 
         return spendingObject;
     },

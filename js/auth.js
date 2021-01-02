@@ -1,40 +1,40 @@
-const login = function (email, password) {
+function login(email, password) {
     firebase.auth().signInWithEmailAndPassword(email, password)
         .then(function () {
             window.location = 'spending.html';
         })
         .catch(function () {
-            const errorMessage = "Email or password is wrong."
-            $("#error").text(errorMessage)
+            const errorMessage = "Email or password is wrong.";
+            $("#error").text(errorMessage);
             $("#error").show();
         });
-}
+};
 
-const signup = function (email, password) {
+function signup(email, password) {
     firebase.auth().createUserWithEmailAndPassword(email, password)
         .then(function (data) {
             const userObject = {
                 name: "",
                 email: data.user.email
-            }
+            };
             // Add user data to firestore
             return firebase.firestore().collection("users")
                 .doc(data.user.uid)
                 .set(userConverter.toFirestore(userObject, data.user.uid));
         })
         .then(function () {
-            const errorMessage = "User is created."
-            $("#success").text(errorMessage)
+            const errorMessage = "User is created.";
+            $("#success").text(errorMessage);
             $("#success").show();
         })
         .catch(function (error) {
-            const errorMessage = "An error occurred."
-            $("#error").text(errorMessage)
+            const errorMessage = "An error occurred.";
+            $("#error").text(errorMessage);
             $("#error").show();
         });
-}
+};
 
-const logout = function () {
+function logout() {
     firebase.auth().signOut().then(function () {
         // Remove details from local storage
         localStorage.removeItem("email");
@@ -42,11 +42,11 @@ const logout = function () {
         localStorage.removeItem("name");
         localStorage.removeItem("spendings");
     });
-}
+};
 
-const hasWindowsLocation = (pathname) => {
-    return window.location.pathname === ("/itrack" + pathname) || window.location.pathname === pathname
-}
+function hasWindowsLocation(pathname) {
+    return window.location.pathname === ("/itrack" + pathname) || window.location.pathname === pathname;
+};
 
 firebase.auth().onAuthStateChanged(function (user) {
     let spendings = [];
