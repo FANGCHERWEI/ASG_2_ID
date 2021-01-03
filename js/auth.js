@@ -45,7 +45,7 @@ async function logout() {
 };
 
 function hasWindowsLocation(pathname) {
-    return window.location.pathname === ("/itrack" + pathname) || window.location.pathname === pathname;
+    return window.location.pathname === ("/itrack" + pathname) || window.location.pathname === pathname || window.location.pathname === ("/ASG_2_ID/" + pathname);
 };
 
 firebase.auth().onAuthStateChanged(async function (user) {
@@ -65,8 +65,8 @@ firebase.auth().onAuthStateChanged(async function (user) {
         });
     } else {
         // Redirect to login if not on login/index/signup for unauthenticated users
-        //         if (!hasWindowsLocation("/index.html") && !hasWindowsLocation("/login.html") && !hasWindowsLocation("/signup.html")) {
-        //             window.location = './login.html';
-        //         }
+        if (!hasWindowsLocation("/index.html") && !hasWindowsLocation("/login.html") && !hasWindowsLocation("/signup.html")) {
+            window.location = './login.html';
+        }
     }
 });
