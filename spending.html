@@ -233,7 +233,11 @@
             $("#spendings-error").hide();
             try {
                 let spendingsHtml = await getSpendingsHtml();
-                $("#spendings").html(spendingsHtml);
+                if (spendingsHtml == "") {
+                    $("#spendings").html("<div class='error'>No spendings available</div>");
+                } else {
+                    $("#spendings").html(spendingsHtml);
+                }
             } catch (error) {
                 $("#spendings-error").text("Unable to fetch spendings from database.");
                 $("#spendings-error").show();

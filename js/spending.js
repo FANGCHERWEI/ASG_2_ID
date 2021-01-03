@@ -19,7 +19,7 @@ class Spending {
     getHtml() {
         // Get icon and text colour for expense or income
         let icon, textColour;
-        if (this.type == "expenses") {
+        if (this.type == "expense") {
             icon = '<i class="material-icons red-text">arrow_drop_down</i>';
             textColour = 'red-text';
         } else {

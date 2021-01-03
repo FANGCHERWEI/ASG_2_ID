@@ -132,7 +132,7 @@
     <script src="js/validator.js"></script>
     <script src="js/index.js"></script>
     <script>
-        const setUpOverallStats = async function () {
+        async function setUpOverallStats() {
             const overallStats = await getOverallStats();
             const balance = overallStats.income - overallStats.expense;
             $("#income").text(overallStats.income.toFixed(2));
@@ -140,7 +140,7 @@
             $("#balance").text(balance.toFixed(2));
         }
 
-        const getIncomeSpendingData = async function (month) {
+        async function getIncomeSpendingData(month) {
             const monthlySpending = await getMonthlySpending(month);
 
             const monthlySpendingData = [];
@@ -155,13 +155,13 @@
             };
         }
 
-        const showNoChartData = function () {
+        function showNoChartData() {
             $("#myChart").hide();
             $("#chart-error").text("No data to display.");
             $("#chart-error").show();
         }
 
-        const setUpChartLegend = function (monthlySpendingData, keyData) {
+        function setUpChartLegend(monthlySpendingData, keyData) {
             let total = 0;
             let html = "";
             monthlySpendingData.forEach(function (monthData) {
@@ -182,7 +182,7 @@
             $("#chart-legend").show();
         }
 
-        const setUpChart = async function (month) {
+        async function setUpChart(month) {
             $("#chart-error").hide();
             $("#chart-legend").hide();
 
@@ -192,31 +192,45 @@
             const monthlySpending = await getIncomeSpendingData(month);
             const monthlySpendingData = monthlySpending.monthlySpendingData;
             const keyData = monthlySpending.keyData;
+            let myDoughnutChart;
+
             if (monthlySpendingData.length == 0) {
                 showNoChartData();
-                return;
+                myDoughnutChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        datasets: [{
+                            data: [],
+                            backgroundColor: ["#EC6524", "#1CB83E", "#00c4a7", "#fcba03", "#fc0303", "#03adfc", "#034efc", "#6f03fc"],
+                            borderWidth: 0,
+                        }]
+                    },
+                    options: {
+                        responsive: false
+                    }
+                });
+            } else {
+                data = {
+                    datasets: [{
+                        data: monthlySpendingData,
+                        backgroundColor: ["#EC6524", "#1CB83E", "#00c4a7", "#fcba03", "#fc0303", "#03adfc", "#034efc", "#6f03fc"],
+                        borderWidth: 0,
+                    }],
+
+                    // These labels appear in the legend and in the tooltips when hovering different arcs
+                    labels: keyData
+                };
+                myDoughnutChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: data,
+                    options: {
+                        responsive: false
+                    }
+                });
+
+                // Set up chart legend
+                setUpChartLegend(monthlySpendingData, keyData);
             }
-
-            data = {
-                datasets: [{
-                    data: monthlySpendingData,
-                    backgroundColor: ["#EC6524", "#1CB83E", "#00c4a7", "#fcba03", "#fc0303", "#03adfc", "#034efc", "#6f03fc"],
-                    borderWidth: 0,
-                }],
-
-                // These labels appear in the legend and in the tooltips when hovering different arcs
-                labels: keyData
-            };
-            let myDoughnutChart = new Chart(ctx, {
-                type: 'doughnut',
-                data: data,
-                options: {
-                    responsive: false
-                }
-            });
-
-            // Set up chart legend
-            setUpChartLegend(monthlySpendingData, keyData);
 
             return myDoughnutChart;
         }

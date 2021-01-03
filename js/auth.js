@@ -49,7 +49,6 @@ function hasWindowsLocation(pathname) {
 };
 
 firebase.auth().onAuthStateChanged(function (user) {
-    let spendings = [];
     if (user) {
         // Save details to local storage
         localStorage.setItem('uid', user.uid);
