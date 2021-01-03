@@ -41,6 +41,8 @@ async function logout() {
         localStorage.removeItem("uid");
         localStorage.removeItem("name");
         localStorage.removeItem("spendings");
+    }).then(function () {
+        window.location = './login.html';
     });
 };
 

@@ -142,7 +142,7 @@
                                 <span><b>Date</b></span>
                             </label>
                             <input class="form-input form-input-light" required type="text" name="date" id="date"
-                                placeholder="MM-DD-YYYY" />
+                                placeholder="DD-MM-YYYY" />
                         </div>
                         <div class="form-input-wrapper w-100">
                             <label for="amount">
@@ -239,6 +239,7 @@
                     $("#spendings").html(spendingsHtml);
                 }
             } catch (error) {
+                console.log(error)
                 $("#spendings-error").text("Unable to fetch spendings from database.");
                 $("#spendings-error").show();
             }
@@ -308,7 +309,7 @@
                 const category = $("#create-spending-form").find("select[name='category']").val();
                 const note = $("#create-spending-form").find("textarea[name='note']").val();
                 const type = $("#create-spending-form").find("option:selected").data("type");
-                const spending = new Spending(amount, category, new Date(date), note, type, editId);
+                const spending = new Spending(amount, category, new Date(dateFormat(date)), note, type, editId);
 
                 // Edit spending
                 if (editId != null) {
@@ -328,7 +329,7 @@
 
                 // Validate date
                 if (!validateDate(date)) {
-                    showErrorText("Date should be in the MM-DD-YYYY format and in the past.");
+                    showErrorText("Date should be in the DD-MM-YYYY format and in the past.");
                     return;
                 }
 

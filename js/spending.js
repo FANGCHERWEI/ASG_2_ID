@@ -40,7 +40,7 @@ class Spending {
                 <div class="d-flex justify-content-between">
                     <div>
                         <h4 class="spendings-title">${this.category}</h4>
-                        <p class="date-text">${new Date(this.date).toDateString()}</p>
+                        <p class="date-text">${this.date.toDateString()}</p>
                     </div>
                     <div>
                         <i class="material-icons spendings-icon edit-spending-btn">create</i>

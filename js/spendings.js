@@ -12,6 +12,13 @@ async function addSpending(spending) {
         });
 };
 
+
+function dateFormat(date) {
+    const tokens = date.split('-');
+    const rightDate = tokens[1] + '-' + tokens[0] + '-' + tokens[2];
+    return rightDate;
+}
+
 async function editSpending(spending) {
     let spendings = await getSpendings();
     await firebase.firestore().collection("spendings")

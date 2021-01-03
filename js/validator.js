@@ -18,10 +18,11 @@ function validateDate(date) {
     if (tokens.length != 3) {
         return false;
     }
+    const rightDate = tokens[1] + '-' + tokens[0] + '-' + tokens[2];
 
     // Check if date is valid
     let newDate;
-    const timestamp = Date.parse(date);
+    const timestamp = Date.parse(rightDate);
     if (isNaN(timestamp) == false) {
         newDate = new Date(timestamp);
     } else {
