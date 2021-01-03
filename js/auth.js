@@ -1,5 +1,5 @@
-function login(email, password) {
-    firebase.auth().signInWithEmailAndPassword(email, password)
+async function login(email, password) {
+    await firebase.auth().signInWithEmailAndPassword(email, password)
         .then(function () {
             window.location = 'spending.html';
         })
@@ -10,8 +10,8 @@ function login(email, password) {
         });
 };
 
-function signup(email, password) {
-    firebase.auth().createUserWithEmailAndPassword(email, password)
+async function signup(email, password) {
+    await firebase.auth().createUserWithEmailAndPassword(email, password)
         .then(function (data) {
             const userObject = {
                 name: "",
@@ -34,8 +34,8 @@ function signup(email, password) {
         });
 };
 
-function logout() {
-    firebase.auth().signOut().then(function () {
+async function logout() {
+    await firebase.auth().signOut().then(function () {
         // Remove details from local storage
         localStorage.removeItem("email");
         localStorage.removeItem("uid");
@@ -48,12 +48,12 @@ function hasWindowsLocation(pathname) {
     return window.location.pathname === ("/itrack" + pathname) || window.location.pathname === pathname;
 };
 
-firebase.auth().onAuthStateChanged(function (user) {
+firebase.auth().onAuthStateChanged(async function (user) {
     if (user) {
         // Save details to local storage
         localStorage.setItem('uid', user.uid);
         localStorage.setItem('email', user.email);
-        firebase.firestore().collection("users").doc(user.uid).get().then(function (doc) {
+        await firebase.firestore().collection("users").doc(user.uid).get().then(function (doc) {
             if (doc.exists) {
                 localStorage.setItem('name', doc.data().name);
             }
@@ -65,8 +65,8 @@ firebase.auth().onAuthStateChanged(function (user) {
         });
     } else {
         // Redirect to login if not on login/index/signup for unauthenticated users
-//         if (!hasWindowsLocation("/index.html") && !hasWindowsLocation("/login.html") && !hasWindowsLocation("/signup.html")) {
-//             window.location = './login.html';
-//         }
+        //         if (!hasWindowsLocation("/index.html") && !hasWindowsLocation("/login.html") && !hasWindowsLocation("/signup.html")) {
+        //             window.location = './login.html';
+        //         }
     }
 });
