@@ -1,3 +1,4 @@
+// Add a spending
 async function addSpending(spending) {
     let spendings = await getSpendings();
     await firebase.firestore().collection("spendings")
@@ -6,19 +7,21 @@ async function addSpending(spending) {
             // Add spending to spendings
             spending.id = doc.id;
             spendings.push(spending);
+            // Store spendings in local storage
             localStorage.setItem("spendings", JSON.stringify(spendings));
         }).catch(function (error) {
             throw "Unable to add spending.";
         });
 };
 
-
 function dateFormat(date) {
     const tokens = date.split('-');
+    // Change date into DD-MM-YYYY format
     const rightDate = tokens[1] + '-' + tokens[0] + '-' + tokens[2];
     return rightDate;
 }
 
+// Edit a spending
 async function editSpending(spending) {
     let spendings = await getSpendings();
     await firebase.firestore().collection("spendings")
@@ -31,10 +34,12 @@ async function editSpending(spending) {
             note: spending.note,
         })
         .then(function () {
+            // Edit the spending in spendings
             let newSpendings = spendings.filter(function (currentSpending) {
                 return currentSpending.id != spending.id;
             });
             newSpendings.push(spending);
+            // Store spendings in local storage
             localStorage.setItem("spendings", JSON.stringify(newSpendings));
         })
         .catch(function (error) {
@@ -42,6 +47,7 @@ async function editSpending(spending) {
         });
 };
 
+// Remove a spending
 async function removeSpending(id) {
     let spendings = await getSpendings();
     await firebase.firestore().collection("spendings")
@@ -52,12 +58,14 @@ async function removeSpending(id) {
             spendings = spendings.filter(function (currentSpending) {
                 return currentSpending.id != id;
             });
+            // Store spendings in local storage
             localStorage.setItem("spendings", JSON.stringify(spendings));
         }).catch(function (error) {
             throw "Unable to delete spending.";
         });
 };
 
+// Get all spendings of user
 async function getSpendings() {
     const spendingsData = localStorage.getItem("spendings");
     // If spendings data is available, return it else get spendings from firebase
@@ -69,11 +77,13 @@ async function getSpendings() {
         return spendings;
     } else {
         const spendings = await getSpendingsFromFirebase(localStorage.getItem("uid"));
+        // Store spendings in local storage
         localStorage.setItem("spendings", JSON.stringify(spendings));
         return spendings;
     }
 };
 
+// Get all spendings of user from firebase
 async function getSpendingsFromFirebase(uid) {
     let spendings = [];
     // Get spendings from firebase
@@ -91,9 +101,11 @@ async function getSpendingsFromFirebase(uid) {
 
 };
 
+// Get spendings html code
 async function getSpendingsHtml() {
     let html = "";
     let spendings = await getSpendings();
+    // Iterate through spendings list
     spendings.forEach(function (spending) {
         const li = spending.getHtml();
         html += li;
@@ -101,10 +113,12 @@ async function getSpendingsHtml() {
     return html;
 };
 
+// Get income, expense and balance stats
 async function getOverallStats() {
     let spendings = await getSpendings();
     let income = 0;
     let expense = 0;
+    // Iterate through spendings list
     spendings.forEach(function (spending) {
         if (spending.type === "expense") {
             expense += spending.amount;
@@ -118,16 +132,21 @@ async function getOverallStats() {
     }
 };
 
+// Get monthly spending breakdown
 async function getMonthlySpending(month) {
     let spendings = await getSpendings();
     let monthlySpending = {};
+
+    // Iterate through spendings list
     spendings.forEach(function (spending) {
         const date = spending.date;
+        // If spending is in the correct month
         if (new Date(spending.date).getMonth() == month) {
             let amount = monthlySpending[spending.category];
             if (typeof amount == "undefined") {
                 amount = 0;
             }
+            // Add spending amount for category
             amount += spending.amount;
             monthlySpending[spending.category] = amount;
         }

@@ -60,6 +60,7 @@ class Spending {
     }
 }
 
+// Convert spending object to and from firestore object
 let spendingConverter = {
     toFirestore: function (spending, uid) {
         // Extra field userid to tag spending to a particular user

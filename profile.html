@@ -102,10 +102,10 @@
             $("#success").hide();
 
             // Set up save profile button
-            $("#save-profile-btn").click(function (e) {
+            $("#save-profile-btn").click(async function (e) {
                 e.preventDefault();
                 const name = $("#profile-form").find("input[name='name']").val();
-                updateName(localStorage.getItem("uid"), name);
+                await updateName(localStorage.getItem("uid"), name);
             });
 
             // Display email and name

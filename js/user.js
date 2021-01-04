@@ -13,6 +13,7 @@ class User {
     }
 }
 
+// Convert user object to and from firestore object
 let userConverter = {
     toFirestore: function (user, uid) {
         let userObject = {
@@ -28,14 +29,17 @@ let userConverter = {
     }
 };
 
-const updateName = function (uid, name) {
-    firebase.firestore().collection("users").doc(uid).update({
+async function updateName(uid, name) {
+    // Update name in firestore
+    await firebase.firestore().collection("users").doc(uid).update({
         "name": name
     }).then(function () {
+        // Show success message
         $("#success").text("Update is successful");
         $("#success").show();
         localStorage.setItem("name", name);
     }).catch(function () {
+        // Show error message
         $("#error").text("An error occurred");
         $("#error").show();
     });

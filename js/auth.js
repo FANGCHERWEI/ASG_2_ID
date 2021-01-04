@@ -1,9 +1,11 @@
 async function login(email, password) {
     await firebase.auth().signInWithEmailAndPassword(email, password)
         .then(function () {
+            // Redirect to spending page
             window.location = 'spending.html';
         })
         .catch(function () {
+            // Show error message
             const errorMessage = "Email or password is wrong.";
             $("#error").text(errorMessage);
             $("#error").show();
@@ -13,6 +15,7 @@ async function login(email, password) {
 async function signup(email, password) {
     await firebase.auth().createUserWithEmailAndPassword(email, password)
         .then(function (data) {
+            // Create user object
             const userObject = {
                 name: "",
                 email: data.user.email
@@ -23,11 +26,13 @@ async function signup(email, password) {
                 .set(userConverter.toFirestore(userObject, data.user.uid));
         })
         .then(function () {
+            // Show success message
             const errorMessage = "User is created.";
             $("#success").text(errorMessage);
             $("#success").show();
         })
         .catch(function (error) {
+            // Show error message
             const errorMessage = "An error occurred.";
             $("#error").text(errorMessage);
             $("#error").show();
@@ -36,12 +41,13 @@ async function signup(email, password) {
 
 async function logout() {
     await firebase.auth().signOut().then(function () {
-        // Remove details from local storage
+        // Remove data from local storage
         localStorage.removeItem("email");
         localStorage.removeItem("uid");
         localStorage.removeItem("name");
         localStorage.removeItem("spendings");
     }).then(function () {
+        // Redirect to login
         window.location = './login.html';
     });
 };
@@ -60,15 +66,17 @@ firebase.auth().onAuthStateChanged(async function (user) {
                 localStorage.setItem('name', doc.data().name);
             }
         }).then(function () {
+            // Get user spendings
             return firebase.firestore().collection("spendings").where("userid", "==", user.uid).get();
         }).then(async function (snapshot) {
+            // Get spendings from firestore and store in local storage
             const spendings = await getSpendingsFromFirebase(user.uid);
             localStorage.setItem("spendings", JSON.stringify(spendings));
         });
     } else {
         // Redirect to login if not on login/index/signup for unauthenticated users
-//         if (!hasWindowsLocation("/index.html") && !hasWindowsLocation("/login.html") && !hasWindowsLocation("/signup.html")) {
-//             window.location = './login.html';
-//         }
+        //         if (!hasWindowsLocation("/index.html") && !hasWindowsLocation("/login.html") && !hasWindowsLocation("/signup.html")) {
+        //             window.location = './login.html';
+        //         }
     }
 });
