@@ -67,8 +67,8 @@ firebase.auth().onAuthStateChanged(async function (user) {
         });
     } else {
         // Redirect to login if not on login/index/signup for unauthenticated users
-        if (!hasWindowsLocation("/index.html") && !hasWindowsLocation("/login.html") && !hasWindowsLocation("/signup.html")) {
-            window.location = './login.html';
-        }
+//         if (!hasWindowsLocation("/index.html") && !hasWindowsLocation("/login.html") && !hasWindowsLocation("/signup.html")) {
+//             window.location = './login.html';
+//         }
     }
 });
