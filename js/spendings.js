@@ -10,6 +10,7 @@ async function addSpending(spending) {
             // Store spendings in local storage
             localStorage.setItem("spendings", JSON.stringify(spendings));
         }).catch(function (error) {
+            console.log(error)
             throw "Unable to add spending.";
         });
 };
@@ -23,6 +24,7 @@ function dateFormat(date) {
 
 // Edit a spending
 async function editSpending(spending) {
+    console.log(spending)
     let spendings = await getSpendings();
     await firebase.firestore().collection("spendings")
         .doc(spending.id)
@@ -43,6 +45,7 @@ async function editSpending(spending) {
             localStorage.setItem("spendings", JSON.stringify(newSpendings));
         })
         .catch(function (error) {
+            console.log(error)
             throw "Unable to edit spending.";
         });
 };
@@ -61,6 +64,7 @@ async function removeSpending(id) {
             // Store spendings in local storage
             localStorage.setItem("spendings", JSON.stringify(spendings));
         }).catch(function (error) {
+            console.log(error)
             throw "Unable to delete spending.";
         });
 };
@@ -136,12 +140,36 @@ async function getOverallStats() {
 async function getMonthlySpending(month) {
     let spendings = await getSpendings();
     let monthlySpending = {};
+    const expenses = ["entertainment", "transport", "bills", "home", "food"];
 
     // Iterate through spendings list
     spendings.forEach(function (spending) {
         const date = spending.date;
         // If spending is in the correct month
-        if (new Date(spending.date).getMonth() == month) {
+        if (new Date(spending.date).getMonth() == month && expenses.includes(spending.category)) {
+            let amount = monthlySpending[spending.category];
+            if (typeof amount == "undefined") {
+                amount = 0;
+            }
+            // Add spending amount for category
+            amount += spending.amount;
+            monthlySpending[spending.category] = amount;
+        }
+    });
+    return monthlySpending;
+};
+
+// Get monthly income breakdown
+async function getMonthlyIncome(month) {
+    let spendings = await getSpendings();
+    let monthlySpending = {};
+    const income = ["gift", "salary", "sales"];
+
+    // Iterate through spendings list
+    spendings.forEach(function (spending) {
+        const date = spending.date;
+        // If spending is in the correct month
+        if (new Date(spending.date).getMonth() == month && income.includes(spending.category)) {
             let amount = monthlySpending[spending.category];
             if (typeof amount == "undefined") {
                 amount = 0;

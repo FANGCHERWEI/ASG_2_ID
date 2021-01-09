@@ -78,9 +78,9 @@
             <section>
                 <div class="mb-3 d-flex justify-content-between align-items-center">
                     <div>
-                        <h2>Monthly Spending</h2>
+                        <h2>Monthly Expenses</h2>
                     </div>
-                    <select name="analytics-filter" id="analytics-filter" class="orange-select-input">
+                    <select id="expense-filter" class="orange-select-input">
                         <option value="0">January</option>
                         <option value="1">February</option>
                         <option value="2">March</option>
@@ -96,12 +96,44 @@
                     </select>
                 </div>
                 <div class="analytics-chart">
-                    <div class="error" id="chart-error"></div>
+                    <div class="error" id="expense-chart-error"></div>
                     <div class="row">
                         <div class="col-lg-6">
-                            <canvas id="myChart" width="400" height="400"></canvas>
+                            <canvas id="expense-chart" width="400" height="400"></canvas>
                         </div>
-                        <div class="col-lg-3" id="chart-legend">
+                        <div class="col-lg-3" id="expense-chart-legend">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="mb-3 d-flex justify-content-between align-items-center">
+                    <div>
+                        <h2>Monthly Income</h2>
+                    </div>
+                    <select id="income-filter" class="orange-select-input">
+                        <option value="0">January</option>
+                        <option value="1">February</option>
+                        <option value="2">March</option>
+                        <option value="3">April</option>
+                        <option value="4">May</option>
+                        <option value="5">June</option>
+                        <option value="6">July</option>
+                        <option value="7">August</option>
+                        <option value="8">September</option>
+                        <option value="9">October</option>
+                        <option value="10">November</option>
+                        <option value="11">December</option>
+                    </select>
+                </div>
+                <div class="analytics-chart">
+                    <div class="error" id="income-chart-error"></div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <canvas id="income-chart" width="400" height="400"></canvas>
+                        </div>
+                        <div class="col-lg-3" id="income-chart-legend">
                         </div>
                     </div>
                 </div>
@@ -140,8 +172,13 @@
             $("#balance").text(balance.toFixed(2));
         }
 
-        async function getIncomeSpendingData(month) {
-            const monthlySpending = await getMonthlySpending(month);
+        async function getIncomeSpendingData(month, type) {
+            let monthlySpending;
+            if (type == 1) {
+                monthlySpending = await getMonthlySpending(month);
+            } else {
+                monthlySpending = await getMonthlyIncome(month);
+            }
 
             const monthlySpendingData = [];
             const keyData = [];
@@ -155,13 +192,13 @@
             };
         }
 
-        function showNoChartData() {
-            $("#myChart").hide();
-            $("#chart-error").text("No data to display.");
-            $("#chart-error").show();
+        function showNoChartData(id) {
+            $(`#${id}-chart`).hide();
+            $(`#${id}-chart-error`).text("No data to display.");
+            $(`#${id}-chart-error`).show();
         }
 
-        function setUpChartLegend(monthlySpendingData, keyData) {
+        function setUpChartLegend(monthlySpendingData, keyData, id) {
             let total = 0;
             let html = "";
             monthlySpendingData.forEach(function (monthData) {
@@ -178,24 +215,24 @@
                         <span>$${total.toFixed(2)}</span>
                     </div>`;
 
-            $("#chart-legend").html(html)
-            $("#chart-legend").show();
+            $(`#${id}-chart-legend`).html(html)
+            $(`#${id}-chart-legend`).show();
         }
 
-        async function setUpChart(month) {
-            $("#chart-error").hide();
-            $("#chart-legend").hide();
+        async function setUpChart(month, id) {
+            $(`#${id}-chart-error`).hide();
+            $(`#${id}-chart-legend`).hide();
 
             // Get the context of the canvas element
-            let ctx = document.getElementById("myChart").getContext('2d');
+            let ctx = document.getElementById(`${id}-chart`).getContext('2d');
 
-            const monthlySpending = await getIncomeSpendingData(month);
+            const monthlySpending = await getIncomeSpendingData(month, 1);
             const monthlySpendingData = monthlySpending.monthlySpendingData;
             const keyData = monthlySpending.keyData;
             let myDoughnutChart;
 
             if (monthlySpendingData.length == 0) {
-                showNoChartData();
+                showNoChartData(id);
                 myDoughnutChart = new Chart(ctx, {
                     type: 'doughnut',
                     data: {
@@ -235,29 +272,41 @@
             return myDoughnutChart;
         }
 
+        async function handleFilterChange(id, chart, month) {
+            $(`#${id}-chart-legend`).hide();
+            const type = (id == "expense") ? 1 : 2;
+            const monthlySpending = await getIncomeSpendingData(month, type);
+            if (monthlySpending.monthlySpendingData.length == 0) {
+                showNoChartData();
+            } else {
+                // Show chart data if available
+                chart.data.datasets[0].data = monthlySpending.monthlySpendingData;
+                chart.data.labels = monthlySpending.keyData;
+                chart.update();
+                setUpChartLegend(monthlySpending.monthlySpendingData, monthlySpending.keyData, id);
+                $(`#${id}-chart-error`).hide();
+                $(`#${id}-chart`).show();
+            }
+        }
+
         $(document).ready(async function () {
             // Set up overall stats
             await setUpOverallStats();
 
             // Set up chart
-            const chart = await setUpChart(0);
+            const expenseChart = await setUpChart(0, "expense");
+            const incomeChart = await setUpChart(0, "income");
 
-            // Set up analytics filter
-            $("#analytics-filter").change(async function () {
+            // Set up expenses filter
+            $("#expense-filter").change(async function () {
                 const month = $(this).val();
-                $("#chart-legend").hide();
-                const monthlySpending = await getIncomeSpendingData(month);
-                if (monthlySpending.monthlySpendingData.length == 0) {
-                    showNoChartData();
-                } else {
-                    // Show chart data if available
-                    chart.data.datasets[0].data = monthlySpending.monthlySpendingData;
-                    chart.data.labels = monthlySpending.keyData;
-                    chart.update();
-                    setUpChartLegend(monthlySpending.monthlySpendingData, monthlySpending.keyData);
-                    $("#chart-error").hide();
-                    $("#myChart").show();
-                }
+                await handleFilterChange("expense", expenseChart, month);
+            });
+
+            // Set up income filter
+            $("#income-filter").change(async function () {
+                const month = $(this).val();
+                await handleFilterChange("income", incomeChart, month);
             });
         });
     </script>

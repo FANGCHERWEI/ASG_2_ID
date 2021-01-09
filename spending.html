@@ -228,6 +228,12 @@
             return [month, day, year].join('-');
         }
 
+        const getStringDate = function (date) {
+            dateString = date.toISOString().split('T')[0];
+            tokens = dateString.split("-");
+            return tokens[2] + "-" + tokens[1] + "-" + tokens[0];
+        }
+
         const setUpSpendings = async function () {
             // Set up spendings
             $("#spendings-error").hide();
@@ -267,7 +273,7 @@
                 })[0];
                 await showPopup();
                 editId = id;
-                const date = $("#create-spending-form").find("input[name='date']").val(getFormattedDate(spending.date));
+                const date = $("#create-spending-form").find("input[name='date']").val(getStringDate(new Date(spending.date)));
                 const amount = $("#create-spending-form").find("input[name='amount']").val(spending.amount);
                 const note = $("#create-spending-form").find("textarea[name='note']").val(spending.note ? spending.note : "");
                 const type = $("#categories select").val(spending.category);
