@@ -28,18 +28,14 @@ XD: located in the folder xd/
 
 ## Features
 
-In this section, you should go over the different parts of your project, and describe each in a sentence or so.
- 
-### Existing Features
 - Authentication - allows users to have an account to use iTrack's features, by signing up/ logging in at the signup/ login page
 - Track spending - allows users to track their spendings, by creating a spending or editing the category/ amount/ date/ note of a spending or deleting a spending
 - Spending statistics - allows users to view their balance, total expenses and total income, by going to the analytics page
 - Spending analysis - allows users to view their monthly spending breakdown for income and expenses, by going to the analytics page
 - Profile update - allows users to update their name, by going to the profile page
 
-In addition, you may also use this section to discuss plans for additional features to be implemented in the future:
-
 ### Features Left to Implement
+
 - Show yearly breakdown of spendings
 - Addition of customisable categories
 - Line graph to show how spending changed through time
@@ -64,28 +60,45 @@ In addition, you may also use this section to discuss plans for additional featu
 
 ## Testing
 
-For any scenarios that have not been automated, test the user stories manually and provide as much detail as is relevant. A particularly useful form for describing your testing process is via scenarios, such as:
+1. Login page:
+    1. Fill in your email and password and press Login
+    2. Try to submit empty blanks for either email or password and verify that an error appears asking you to fill in the field
+    3. Try to submit invalid password/email and verify that an error appears telling you that the email or password is wrong
 
-1. Contact form:
-    1. Go to the "Contact Us" page
-    2. Try to submit the empty form and verify that an error message about the required fields appears
-    3. Try to submit the form with an invalid email address and verify that a relevant error message appears
-    4. Try to submit the form with all inputs valid and verify that a success message appears.
+2. New Spending feature:
+    1. After logging in, you will be brought to the spendings page
+    2. Try to add a new spending and fill in the appropriate fields
+    3. Try to submit the form with an invalid date format other than (DD-MM-YYYY) and verify that an error pops up telling you to use the correct format
+    4. Try to submit the form with an invalid amount other than integers and verify that an error pops up telling you to enter a number
 
-In addition, you should mention in this section how your project looks and works on different browsers and screen sizes.
+3. Spending page:
+    1. After logging in, you will be brought to the spendings page
+    2. You can select the New Spending feature and search for your categories of spendings 
 
-You should also mention in this section any interesting bugs or problems you discovered during your testing, even if you haven't addressed them yet.
+4. Analytics page:
+    1. You can navigate to the spendings page on the left side of the screen
+    2. Here, I can view my overall Income and Expenses and check whether i have a positive or negative balance.
+    3. I can also view my monthly expenses and income.
+    4. If i select the specific months where i have spent money, a pie chart will pop up and show you how much money you have spent or earned based on each category.
 
-If this section grows too long, you may want to split it off into a separate file and link to it from here.
+5. Profile page:
+    1. You can navigate to the Profile page on the left side of the screen
+    2. Here, I can view my email and my name.
+    3. I am also given the option to change my name only.
+
+The website i have created has been coded in the way where all devices are able to view it in a pleasant manner. Meaning, no strained eyes as font sizes and picture sizes are all adjusted to cater to the user's device.
 
 ## Credits 
+
 - unsplash.com
 - vectorstock.com
 
 ### Content
+
 - The text for section Y was copied from the [Wikipedia article Z](https://en.wikipedia.org/wiki/Z)
 
 ### Media
+
 - The photos used in this site were obtained from 
     - unsplash.com
     - vectorstock.com
