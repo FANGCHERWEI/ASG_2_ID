@@ -93,10 +93,6 @@ The website i have created has been coded in the way where all devices are able 
 - unsplash.com
 - vectorstock.com
 
-### Content
-
-- The text for section Y was copied from the [Wikipedia article Z](https://en.wikipedia.org/wiki/Z)
-
 ### Media
 
 - The photos used in this site were obtained from 
