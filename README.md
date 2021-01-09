@@ -13,6 +13,7 @@ Target Audience:
 
 Design process:
 - I wanted to let users be able to track their spending, as well as gain insights from their spendings, hence the two main functions of the app are tracking and analysis. 
+- Local storage is used to store auth and spending information across pages. These data are also stored in a web database for persistent storage of information, so that users don't have to keep redoing their spendings each time they log in. 
 - Based on research, spendings can fall under two main categories, income and expense, where income is money inflow while expense is money outflow.
 - iTrack allows users to track and analyse their income and expenses. Users can enter their spending information in the spendings page to see all their individual spendings. Each spending can be categoried under an income or expense category. Then users can proceed to analyse their spendings in the analytics page, which provides them a breakdown of their monthly income and expense, and their overall balance according to the spendings they have entered.
 
