@@ -1,5 +1,4 @@
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// My web app's Firebase configuration
 var firebaseConfig = {
     apiKey: "AIzaSyBOTdACA2i2d3sAWnPhNfcJi3ZXb8_qoxM",
     authDomain: "itrack-bf402.firebaseapp.com",

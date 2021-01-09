@@ -73,10 +73,5 @@ firebase.auth().onAuthStateChanged(async function (user) {
             const spendings = await getSpendingsFromFirebase(user.uid);
             localStorage.setItem("spendings", JSON.stringify(spendings));
         });
-    } else {
-        // Redirect to login if not on login/index/signup for unauthenticated users
-        //         if (!hasWindowsLocation("/index.html") && !hasWindowsLocation("/login.html") && !hasWindowsLocation("/signup.html")) {
-        //             window.location = './login.html';
-        //         }
-    }
+    } 
 });
