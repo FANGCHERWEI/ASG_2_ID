@@ -1,3 +1,9 @@
+#Github Link 
+https://fangcherwei.github.io/ASG_2_ID/
+Email: NPID@ASSIGNMENT.COM
+Password: cherwei123
+For the website ^
+
 # iTrack
 
 iTrack is a money tracker and helps users manage their spending. Users can track and categorise their expenses and income, and view an analysis of their spending through intuitive charts. iTrack makes use of an api called the firebase. The firebase is an api that allows users to have the ability to sync, store and edit data in realtime. Using the "Spark plan"
